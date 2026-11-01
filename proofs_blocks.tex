@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{remark}\newtheorem*{rem}{Remark}
+\newcommand{\K}{\overline{\mathbb F}_p}
+\newcommand{\F}{\mathbb F_p}
+\newcommand{\V}{\mathcal V}
+\title{Complete proofs: kernel of a block, corank formula\\and duality between the blocks $k$ and $n-k$}
+\author{Mohamed Sofiene\\[2pt]
+\small Technical Head, Office National de T\'el\'ediffusion de Tunisie (ONT)\\
+\small B.Sc.\ in IoT and Communication Networks; B.Sc.\ in Electrical Engineering, University of Tunis\\
+\small Independent researcher\\
+\small \texttt{mohamedsofiene@gmail.com}\\[2pt]
+\small for the family $y^n=x^d+\sigma x^r+1$ over $\F$}
+\date{19 October 2026 (English translation 27 October 2026; corrected 31 October 2026)}
+\begin{document}\maketitle
+\begin{abstract}
+The three points that the previous note left as observations (completeness of the formula $\mathrm{corank}=m-\mathrm{rank}\,A$, bounds on $m$, duality law (K)) are proved here, by hand, for $\sigma$ such that $f$ is squarefree. The points not proved are listed at the end (cycles, $\gcd(d,n)>1$, $\sigma$ with $f$ not squarefree).
+\end{abstract}
+
+\section*{0. Conventions}
+$p$ prime, $p\nmid n$, $\gcd(d,n)=1$, $1\le r<d$, $\sigma\in\F^*$, $f=x^d+\sigma x^r+1$ \emph{squarefree over $\K$}. We work over $K=\K$ (the rank of a matrix with coefficients in $\F$ does not change under extension). $\V_m$ = polynomials of degree $<m$.
+
+For $1\le k<n$: $k_{\rm out}\equiv kp^{-1}\pmod n$, $g_k=\lfloor kd/n\rfloor$, $N=(k_{\rm out}p-k)/n\in[0,p-1]$, $j=p-1-N$. The block is $M^{(k)}[b,i]=[x^{pb-i}]f^N$, $1\le b\le g_{k_{\rm out}}$, $1\le i\le g_k$. Write $g=g_k$ and $L(G)=fG'-jf'G$.
+
+The kernel of $M^{(k)}$ is seen in $\V_g$ via $q\mapsto Q=\sum q_ix^{i-1}$: then $(Mq)_b=[x^{pb-1}](f^NQ)$.
+
+\section{The kernel consists of exact differentials}
+
+\begin{lem}\label{l0} For $Q\in\V_g$ and $b>g_{k_{\rm out}}$, $[x^{pb-1}](f^NQ)=0$.\end{lem}
+\begin{proof} If this coefficient is non-zero, $pb-1\le Nd+g-1$, so $pb\le Nd+g=\frac{k_{\rm out}pd-kd}{n}+g\le\frac{k_{\rm out}pd}{n}$ because $g\le kd/n$. Hence $b\le k_{\rm out}d/n$, i.e.\ $b\le g_{k_{\rm out}}$.\end{proof}
+
+Thus $Mq=0\iff$ no term $x^{pb-1}$ ($b\ge1$) in $f^NQ$ $\iff C(f^NQ\,dx)=0$, where $C$ is the Cartier operator ($C(x^{pb-1}dx)=x^{b-1}dx$, $C(x^mdx)=0$ if $p\nmid m+1$, $C(h^p\omega)=hC(\omega)$, and $\ker C=d\,K(x)$).
+
+\begin{thm}[kernel]\label{t1} $\ker M^{(k)}\cong\{G\in\V_{dj}:\ \deg L(G)\le g-1\}$, via $G\mapsto Q=L(G)$.\end{thm}
+\begin{proof}
+Since $N=p-1-j$, $f^N=f^p f^{-(j+1)}$, so $C(f^NQ\,dx)=f\cdot C\big(Q\,dx/f^{j+1}\big)$; the kernel is therefore the set of $Q\in\V_g$ such that $\omega=Q\,dx/f^{j+1}$ is exact.
+
+($\Leftarrow$) If $G\in\V_{dj}$, $d(G/f^j)=\frac{fG'-jf'G}{f^{j+1}}dx$; so $Q=L(G)$ gives an exact form.
+
+($\Rightarrow$) Let $\omega=dh$, $h\in K(x)$. Decompose $h=P(x)+\sum_{\beta}\sum_{e\ge1}c_{\beta,e}(x-\beta)^{-e}$. Then $dh=P'dx-\sum e\,c_{\beta,e}(x-\beta)^{-e-1}dx$: the terms with $p\mid e$ and the monomials of $P$ of degree divisible by $p$ disappear. Now $\omega=Q/f^{j+1}$ is a proper fraction ($\deg Q<d$), whose partial-fraction decomposition has poles only at the roots $\alpha_i$ of $f$ (simple), of order $\le j+1$. By uniqueness: $P'=0$, and $e\,c_{\beta,e}=0$ as soon as $\beta$ is not a root or $e\ge j+1$. Put $\tilde h=\sum_i\sum_{1\le e\le j}c_{\alpha_i,e}(x-\alpha_i)^{-e}$. Since $j\le p-1$, no $e\le j$ is divisible by $p$, so $d\tilde h=dh=\omega$. The roots being simple, $\tilde h=G/f^j$ with $G$ a polynomial, and $\tilde h\to0$ at infinity gives $\deg G<dj$. Finally $d\tilde h=L(G)\,dx/f^{j+1}$ gives $Q=L(G)$.\end{proof}
+
+\begin{lem}[injectivity of $L$]\label{l2} $L$ is injective on $\V_{dj}$.\end{lem}
+\begin{proof} $L(G)=0\iff(G/f^j)'=0\iff G/f^j\in K(x^p)$. A $p$-th power has poles only of order a multiple of $p$; but $G/f^j$ has poles of order $\le j<p$ at the roots of $f$: it has none, so it is a polynomial $P^p$. But $\deg G<dj$ gives $\deg(G/f^j)<0$, hence $P=0$, $G=0$.\end{proof}
+
+\begin{cor}\label{c3} $\dim\ker M^{(k)}=\dim W$, where $W=\{G\in\V_{dj}:\deg L(G)<g\}$.\end{cor}
+
+\section{The corank formula (completeness)}
+
+The Laurent polynomials $\Phi_M=x^{-pM}f^j$ ($M\ge1$) satisfy $L(\Phi_M)=0$: indeed $\Phi_M'=jx^{-pM}f^{j-1}f'$ (because $p\mid pM$), so $f\Phi_M'=jf'\Phi_M$. Write $\Phi_M=h_M+P_M$ (part with exponents $\ge0$ / part with exponents $\le-1$). Let $m=\lfloor dj/p\rfloor$; $h_M\ne0\iff M\le m$, and $\deg h_M=dj-pM$.
+
+\begin{lem}\label{l4} For $M\le m$: $h_M\in\V_{dj}$, $L(h_M)=-L(P_M)$ has degree $\le d-2$.\end{lem}
+\begin{proof} $L(h_M)=-L(P_M)$ because $L(\Phi_M)=0$. Now $L(x^{t})=(t-jd)x^{t+d-1}+\sigma(t-jr)x^{t+r-1}+t\,x^{t-1}$ and $P_M$ has only exponents $t\le-1$: the exponents of $L(P_M)$ are $\le d-2$.\end{proof}
+
+\begin{prop}\label{p5} $S:=\{G\in\V_{dj}:\deg L(G)\le d-2\}$ has basis $(h_M)_{1\le M\le m}$; $\dim S=m$.\end{prop}
+\begin{proof} The $h_M$ ($M\le m$) lie in $S$ (Lemma \ref{l4}) and have distinct degrees: they are independent. Conversely let $G\in S$ be non-zero of degree $s$ ($s\le dj-1$). The coefficient of $x^{s+d-1}$ in $L(G)$ is $(s-jd)G_s$ (the other terms have exponents $\le s+r-1<s+d-1$); since $s+d-1\ge d-1>d-2$, we have $(s-jd)G_s=0$, so $s\equiv dj\pmod p$, i.e.\ $s=dj-pM$ with $1\le M\le m$. A subspace whose non-zero elements have degrees in a set of $m$ values has dimension $\le m$. Hence $\dim S=m$ and $S=\mathrm{span}(h_M)$.\end{proof}
+
+\begin{thm}[corank formula]\label{t6} Let $A=(A_{M,e})$, $1\le M\le m$, $g\le e\le d-2$, $A_{M,e}=[x^e]L(P_M)$. Then $\dim\ker M^{(k)}=m-\mathrm{rank}\,A$.\end{thm}
+\begin{proof} Since $g\le d-1$, $W\subset S$. For $G=\sum\lambda_Mh_M$, $[x^e]L(G)=-\sum_M\lambda_MA_{M,e}$ for $g\le e\le d-2$, and $\deg L(G)\le d-2$; so $G\in W\iff\lambda A=0$. The $h_M$ being independent, $\dim W=m-\mathrm{rank}A$. Conclude by Corollary \ref{c3}.\end{proof}
+
+\begin{cor}\label{c7} (i) $\dim\ker M^{(k)}\ge m-\nu$, where $\nu$ is the maximum matching number of the support graph of $A$ (rank $\le$ term rank, K\"onig--Egerv\'ary). (ii) In particular an identically zero row of $A$ produces a kernel vector.\end{cor}
+
+\section{Duality between $k$ and $n-k$}
+
+\begin{lem}[arithmetic]\label{l8} For the block $n-k$: (a) $N(n-k)=p-1-N=j$; (b) $g_{n-k}=d-1-g$; (c) $(n-k)_{\rm out}=n-k_{\rm out}$ and $g'_{\rm out}:=g_{n-k_{\rm out}}=d-1-g_{k_{\rm out}}$; (d) $R:=\lfloor (dj+d-1-g)/p\rfloor=g'_{\rm out}$; (e) $m\le R$.\end{lem}
+\begin{proof} (a) $\frac{(n-k_{\rm out})p-(n-k)}{n}=p-1-\frac{k_{\rm out}p-k}{n}$. (b),(c) $kd/n\notin\mathbb Z$, so $\lfloor d-kd/n\rfloor=d-1-g_k$.
+(d) Put $u=dk_{\rm out}\bmod n$, $v=dk\bmod n$ ($u,v\ne0$); $up\equiv v\pmod n$. One computes $dj+d-1-g=p(d-g_{k_{\rm out}})-p\frac un-(1-\frac vn)$, whence $R=d-1-g_{k_{\rm out}}+\lfloor\theta\rfloor$ with $\theta=1-\frac un-\frac{1-v/n}{p}$. Now $\theta<1$, and $p\,n\,\theta=pn-pu-n+v=n(p-1-c)$ with $c=(pu-v)/n\in\mathbb Z$, $c<pu/n<p$: so $\theta\ge0$ and $\lfloor\theta\rfloor=0$. (e) obvious.\end{proof}
+
+Write $B=M^{(n-k)}$: by (a)--(c), $B[b,t]=[x^{pb-t}]f^j$ for $1\le b\le R$, $1\le t\le d-1-g$. Write $\kappa=\dim\ker M^{(k)}$ and $\gamma=\dim\mathrm{coker}\,B$ (dimension of the left kernel).
+
+\begin{thm}[law (K)]\label{t9} $\kappa=\gamma$.\end{thm}
+\begin{proof} Let $X=K^R$; for $\mu\in X$ put $\Phi_\mu=\sum_{b=1}^R\mu_b\Phi_b$ (Laurent polynomial, $L(\Phi_\mu)=0$), $\Phi_\mu=G(\mu)+P(\mu)$ (parts $\ge0$ and $\le-1$). Let $g'=d-1-g$.
+
+\emph{Two linear maps.} (1) $C:X\to K^{g'}$, $C_t(\mu)=[x^{-t}]\Phi_\mu=\sum_b\mu_bB[b,t]$, so $C(\mu)=\mu B$ and $\dim\ker C=\gamma$. (2) $E:X\to K^{g'}$, $E_e(\mu)=[x^e]L(G(\mu))$ ($g\le e\le d-2$).
+
+\emph{Link.} $L(G)=-L(P)$ gives $E_e(\mu)=-[x^e]L(P(\mu))$. By the formula for $L(x^{-t})$, this coefficient depends only on the $C_t$ with $t\le d-1-e\le g'$: $E=\widetilde T\circ C$ (possibly after reindexing), in particular $\ker C\subset\ker E$. Explicitly, with $t=d-1-e$ and $t'=r-1-e$,
+$$E_e(\mu)=(t+jd)\,C_t(\mu)+\sigma\,(t'+jr)\,C_{t'}(\mu)\qquad(C_{t'}:=0\text{ if }t'<1),$$
+with positive signs (checked numerically on $784$ random cases).
+
+\emph{Computation of $\kappa$.} By Proposition \ref{p5}, $\mu\mapsto G(\mu)$ maps $X$ onto $S$, with kernel $X_{>m}=\{\mu:\mu_b=0\ \forall b\le m\}$ (dimension $R-m$). By Theorem \ref{t6} and its proof, $W$ is the image of $\ker E$. Hence $\kappa=\dim\ker E-(R-m)$.
+
+\emph{Claim: $\ker E=\ker C+X_{>m}$.} Both spaces lie in $\ker E$ (for $b>m$, $h_b=0$, $G(e_b)=0$). Conversely let $\mu\in\ker E$, $t_1=\min\{t\ge1:[x^{-t}]\Phi_\mu\ne0\}$; if $t_1>g'$, then $\mu\in\ker C$. Otherwise, $e_1=d-1-t_1\in[g,d-2]$ and the coefficient of $x^{e_1}$ in $L(P(\mu))$ is obtained by $L(x^{-t})=(-t-jd)x^{d-1-t}+\sigma(-t-jr)x^{r-1-t}-t\,x^{-t-1}$: it equals $-(t_1+jd)[x^{-t_1}]\Phi_\mu$, the other terms having strictly smaller exponents (because $r<d$ and $t>t_1$). Since $E_{e_1}(\mu)=0$, we get $t_1+jd\equiv0\pmod p$. Put $b_1=(t_1+dj)/p\in\mathbb Z$: $pb_1>dj$ gives $b_1\ge m+1$, and $pb_1\le g'+dj$ gives $b_1\le R$. Now $\Phi_{b_1}$ is purely polar (because $b_1>m$), with leading term $x^{-t_1}$ (coefficient 1). Replace $\mu$ by $\mu-c\,e_{b_1}$ ($c=[x^{-t_1}]\Phi_\mu$): the part $\ge0$ does not change, $\mu$ stays in $\ker E$, and $t_1$ strictly increases. After at most $g'$ steps, $t_1>g'$: we have $\mu=\mu^{\rm fin}+\sum c_be_b$ with $\mu^{\rm fin}\in\ker C$ and $b>m$.
+
+\emph{$\ker C\cap X_{>m}=0$.} For $m<b\le R$, row $b$ of $B$ is zero for $t<t_b:=pb-dj$ (exponent $>dj=\deg f^j$) and equals $1$ at $t=t_b$ ($f$ monic); moreover $1\le t_b\le g'$ (because $b>m$ and $b\le R$) and $t_b$ is strictly increasing: these rows are independent.
+
+\emph{Conclusion.} $\dim\ker E=\dim\ker C+(R-m)$, hence $\kappa=\dim\ker C=\gamma$.\end{proof}
+
+\begin{cor}\label{c10} (i) $\mathrm{rank}\,M^{(k)}-\mathrm{rank}\,M^{(n-k)}=g_k+g_{k_{\rm out}}-(d-1)$. (ii) For a fixed point $k_{\rm out}=k$: $m\le d-1-g_k$. (iii) If $k_1=n-k_0$ and $k_{0,\rm out}=k_1$ (self-dual 2-cycle), the two blocks have the same rank.\end{cor}
+\begin{proof} (i) $\kappa=g_k-\mathrm{rank}\,M^{(k)}$ and $\gamma=g'_{\rm out}-\mathrm{rank}\,M^{(n-k)}$ with $g'_{\rm out}=d-1-g_{k_{\rm out}}$ (Lemma \ref{l8}); apply Theorem \ref{t9}. (ii) $m\le R=d-1-g_{k_{\rm out}}$ (Lemma \ref{l8}(d),(e)). (iii) Here $g_{k_0}+g_{k_1}=d-1$.\end{proof}
+
+\section*{4. What is now proved, and what is not}
+\noindent\textbf{Proved} (for $f$ squarefree, $\gcd(d,n)=1$, $p\nmid n$): Theorem \ref{t1} (which fills the gap ``poles of order $\ge p$''), Lemma \ref{l2}, Proposition \ref{p5} ($\dim S=m=\lfloor dj/p\rfloor$, which shows that $s_0\equiv dj$ adds nothing), Theorem \ref{t6} (exact formula), Corollary \ref{c7}, Theorem \ref{t9} (K) and Corollary \ref{c10}.
+
+\noindent\textbf{Not proved}: (a) everything concerning cycles of length $\ge2$ (the theorem (K) does not extend to composites; the intersection $\mathrm{im}M_0\cap\ker M_1\ne0$ of the 70 pure cases remains an observation); (b) $\gcd(d,n)>1$; (c) $\sigma$ with $f$ not squarefree; (d) the rule $t\,r\equiv\mathrm{gap}\cdot p\pmod d$ for pairs of proportional rows; (e) the 7 dependencies among $\ge3$ rows.
+
+\noindent\textbf{Numerical control checks} (independent of the proofs): Theorem \ref{t1}/Corollary \ref{c3} on 6\,175 cases (0 discrepancy), $\dim S=m$ on 2\,074 cases, Lemma \ref{l8} on 7\,370 triples $(n,p,d,k)$, and (K) in Sage on 61\,658 cases (previous note).
+\end{document}

@@ -1,0 +1,1437 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,
+  pdfauthor={Mohamed Sofiene},pdftitle={Superelliptic generalisation of hidden vanishings}}
+\usepackage[margin=2.3cm]{geometry}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Fbar}{\overline{\mathbb{F}}}
+\DeclareMathOperator{\rg}{rk}
+\DeclareMathOperator{\Ker}{Ker}
+
+\title{\textbf{Superelliptic generalisation of the theory of hidden vanishings:}\\[2pt]
+\Large the family $y^n = x^d + \sigma x^r + 1$}
+\author{Mohamed Sofiene\\[2pt]
+\small Technical Head, Office National de T\'el\'ediffusion de Tunisie (ONT)\\
+\small B.Sc.\ in IoT and Communication Networks; B.Sc.\ in Electrical Engineering, University of Tunis\\
+\small Independent researcher\\
+\small \texttt{mohamedsofiene@gmail.com}}
+\date{31 October 2026 (version 4.3)}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We extend the theory of hidden vanishings of the Cartier--Manin matrix,
+established for the hyperelliptic family $y^2=x^d+\sigma x^r+1$, to the
+superelliptic families $y^n=x^d+\sigma x^r+1$ ($n\ge2$, $\gcd(d,n)=1$) over
+$\F_p$ with $\gcd(p,n)=1$. Two results are established. \textbf{Theorem~A}
+constructs, with a complete proof from the axioms of the Cartier operator, the
+generalised Cartier matrix with respect to the basis of differentials
+$\omega_{i,k}=x^{i-1}\,dx/y^k$ ($1\le i\le g_k$): its blocks, indexed by $k=1,\dots,n-1$, are linked
+by $k\mapsto k_{\mathrm{out}}\equiv k\,p^{-1}\pmod n$, with multinomial
+exponent $N(k)=(k_{\mathrm{out}}\,p-k)/n$ and entries given by coefficient
+extraction in $f(x)^{N(k)}$. \textbf{Theorem~B} establishes that the $p$-rank of
+the Jacobian is \emph{not} the rank of this matrix after a single application,
+but its \textbf{stabilised rank under iteration} (Fitting's lemma) --- a point
+we first missed, which produced reproducible numerical discrepancies, and which
+we correct here with a proof and a complete example. Everything is checked
+independently by point counting on 18 configurations covering $n=2,3,4$ and
+both regimes $p\equiv1\pmod n$ and $p\not\equiv1\pmod n$.
+A further part (\S\ref{sec:blocs}--\ref{sec:classif}) proves by hand a
+description of the kernel of the blocks, a duality law and a criterion for
+$d=p$, and classifies $143$ cases of hidden vanishings (status
+[D]/[V]/[O]); $44$ cases remain unexplained. Sections
+\S\ref{sec:menger}--\ref{sec:meca} add a general Menger theorem
+($\Delta<g_0\Rightarrow\det\Phi\equiv0$), its closed criterion proved for $d=p$
+(checked on $6104$ cases) and the decomposition of the observed mechanisms. The tallies quoted come from distinct sweeps (different ranges of $p,d$) and are not reconciled with one another.
+Version~4 adds (\S\ref{sec:stylo}--\ref{sec:remarks}) a proved degree law, two
+examples that can be checked entirely by hand (one cancellation and one
+Fermat-type case, $p=3$), a multiplicity/corank theorem, a survey of the
+corank outside the family $p\equiv-1\pmod n$, Conjecture~G (generic support)
+and a \emph{coverage correction}: the symmetry $r\leftrightarrow d-r$, which
+some recent sweeps assumed, is false.
+Version~4.1 (\S\ref{sec:v41}) adds: the second-iterate lemma (for
+$\sigma\in\F_p$), the description of the kernel of a block as the image of a
+first-order differential operator (\textbf{[D]}), a recurrence between columns
+explaining the twin columns, numerical laws for the profile of the exact forms
+(\textbf{[V]}), a rank bound by cuts, the census of $27$ distinct cases of exact
+cancellation (instead of $33$ with duplicates) and a complete by-hand proof of
+one mixed case. Version~4.2 adds a test of the variant $y^n=x^d+\sigma x^r+t$
+and of values of the parameter outside $\F_p$ (\S\ref{sec:tvar}).
+\end{abstract}
+
+\section{Setting and notation}
+
+Let $p$ be an odd prime, $n\ge2$ with $\gcd(p,n)=1$, and
+$$\mathcal{C}\ :\ y^n = f(x) = x^d+\sigma x^r+1,\qquad 0<r<d,\ \gcd(d,n)=1,$$
+a smooth curve over $\F_p$ (we assume $f$ has no multiple root). The condition
+$\gcd(d,n)=1$ ensures total ramification (index $n$) at the unique point at
+infinity $P_\infty$, which is therefore automatically $\F_p$-rational: being the
+only geometric point above $x=\infty$, it is necessarily fixed by Frobenius.
+
+By Riemann--Hurwitz (total ramification at the $d$ roots of $f$ and at
+$P_\infty$, i.e.\ $d+1$ branch points), the genus is
+$$g=\frac{(n-1)(d-1)}{2}.$$
+
+The space $H^0(\mathcal{C},\Omega^1)$ has as a basis the differentials (a
+classical fact for cyclic covers of $\mathbb{P}^1$; see e.g.\ Hase-Liu and
+Triantafillou, \emph{Efficient Point-Counting Algorithms for Superelliptic
+Curves}, arXiv:1709.02442)
+$$\omega_{i,k}=\frac{x^{i-1}}{y^k}\,dx,\qquad 1\le k\le n-1,\quad 1\le i\le
+g_k,\qquad g_k:=\left\lfloor\frac{kd}{n}\right\rfloor,$$
+and $\sum_{k=1}^{n-1}g_k=g$.
+
+\section{Theorem A: the generalised Cartier operator}
+
+We recall the three properties that characterise the Cartier operator
+$C:H^0(\Omega^1)\to H^0(\Omega^1)$ on a smooth curve over $\F_p$ (Cartier, 1957;
+see Serre, \emph{Sur la topologie des vari\'et\'es alg\'ebriques en
+caract\'eristique $p$}): for every function $h$ of the function field and every
+integer $s$,
+$$\text{(i) } C(h^p\,\omega)=h\,C(\omega);\qquad
+\text{(ii) } C(x^s\,dx)=0 \text{ if } s\not\equiv p-1\!\!\pmod p;\qquad
+\text{(iii) } C(x^{p-1}\,dx)=dx.$$
+These three axioms determine $C$ uniquely on every subspace spanned by
+differentials of the form $g(x)\,dx$ with $g\in\F_p(x)$: writing
+$g(x)=\sum_m c_m x^m$, additivity and (i) applied to $h=x^{j-1}$, with
+$x^m\,dx=(x^{j-1})^p\cdot x^{p-1}dx$ for $m=pj-1$, give the classical formula
+\begin{equation}
+C\Big(\sum_m c_m x^m\,dx\Big)=\sum_{j\ge1} c_{pj-1}^{1/p}\,x^{j-1}\,dx. \tag{$\star$}
+\end{equation}
+
+\begin{lemma}[Inversion of $y^k$]
+\label{lemma:inversion}
+For $1\le k\le n-1$, let $k_{\mathrm{out}}\in\{1,\dots,n-1\}$ be the unique
+integer with $k_{\mathrm{out}}\,p\equiv k\pmod n$, and set
+$$N(k)=\frac{k_{\mathrm{out}}\,p-k}{n}\ \in\ \mathbb{Z}_{\ge0}.$$
+Then, in the function field of $\mathcal{C}$,
+$$\frac{1}{y^k}=f(x)^{N(k)}\cdot\Big(\frac{1}{y^{k_{\mathrm{out}}}}\Big)^{p}.$$
+\end{lemma}
+
+\begin{proof}
+By construction $k_{\mathrm{out}}\,p-k=nN(k)$, so $y^{nN(k)}=y^{k_{\mathrm{out}}p-k}$,
+i.e.\ $y^{nN(k)}\cdot y^k=y^{k_{\mathrm{out}}p}$. Since $y^n=f(x)$, the left-hand
+side equals $f(x)^{N(k)}\cdot y^k$, hence
+$f(x)^{N(k)}\cdot y^k=y^{k_{\mathrm{out}}p}=(y^{k_{\mathrm{out}}})^p$. Dividing
+both sides by $y^k\cdot(y^{k_{\mathrm{out}}})^p$ gives the claimed equality.
+($k_{\mathrm{out}}$ exists and is unique because $p$ is invertible modulo $n$ by
+the hypothesis $\gcd(p,n)=1$; $N(k)\ge0$ because $k_{\mathrm{out}}\ge1$, so $k_{\mathrm{out}}p\ge p\ge k$ as soon as $p\ge n$, a condition satisfied in all our uses; $N(k)<p$ because $k_{\mathrm{out}}<n$.)
+\end{proof}
+
+\begin{theorem}[Generalised Cartier operator]
+\label{thm:A}
+For $1\le k\le n-1$ and $1\le i\le g_k$,
+$$C(\omega_{i,k})=\sum_{i'=1}^{g_{k_{\mathrm{out}}}}
+\Big[\,\text{coeff.\ of } x^{\,p\,i'-i}\text{ in } f(x)^{N(k)}\,\Big]\;
+x^{i'-1}\,\frac{dx}{y^{k_{\mathrm{out}}}}.$$
+In other words, the matrix of $C$ in the basis $(\omega_{i,k})$ has, at row
+$(k_{\mathrm{out}},i')$ and column $(k,i)$, the coefficient of $x^{pi'-i}$ in the
+trinomial expansion of $f(x)^{N(k)}=(x^d+\sigma x^r+1)^{N(k)}$ --- extracted, as
+in the classical case $n=2$, by the multinomial formula
+$$[\,x^{m}\,]\,f(x)^{N}=\sum_{\substack{\alpha+\beta+\gamma=N\\ d\alpha+r\beta=m}}
+\binom{N}{\alpha,\beta,\gamma}\,\sigma^{\beta}.$$
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lemma:inversion}, $\omega_{i,k}=x^{i-1}\,f(x)^{N(k)}\cdot
+\big(y^{-k_{\mathrm{out}}}\big)^p\,dx$. Put $h=y^{-k_{\mathrm{out}}}$ and
+$\omega'=x^{i-1} f(x)^{N(k)}\,dx$: then $\omega_{i,k}=h^p\,\omega'$, and by axiom
+(i), $C(\omega_{i,k})=h\cdot C(\omega')$. Now $\omega'=g(x)\,dx$ with
+$g(x)=x^{i-1} f(x)^{N(k)}\in\F_p[x]$, so ($\star$) applies: writing
+$g(x)=\sum_m c_m x^m$,
+$$C(\omega')=\sum_{j\ge1}c_{pj-1}^{1/p}\,x^{j-1}\,dx.$$
+Since $c_m\in\F_p$ satisfies $c_m^{1/p}=c_m$ (Fermat's little theorem: we work
+over $\F_p$ exactly, not over an extension), we obtain
+$$C(\omega_{i,k})=h\cdot\sum_{j\ge1}c_{pj-1}^{1/p}\,x^{j-1}\,dx
+=\sum_{j\ge1}\big[\,\text{coeff.\ of }x^{pj-1}\text{ in } x^{i-1}f(x)^{N(k)}\,\big]\,
+x^{j-1}\,\frac{dx}{y^{k_{\mathrm{out}}}}.$$
+The coefficient of $x^{pj-1}$ in $x^{i-1}f(x)^{N(k)}$ is that of $x^{pj-i}$ in
+$f(x)^{N(k)}$. Putting $i'=j$, and observing that $C(\omega_{i,k})\in
+H^0(\Omega^1)$ necessarily decomposes on the basis
+$(x^{i'-1}dx/y^{k_{\mathrm{out}}})_{1\le i'\le g_{k_{\mathrm{out}}}}$ (the Cartier
+operator preserves holomorphy, a classical fact), the sum restricts to
+$1\le i'\le g_{k_{\mathrm{out}}}$, which gives the statement.
+\end{proof}
+
+\begin{remark}[Terminology]
+Strictly speaking, the matrix $M$ of Theorem~\ref{thm:A} is the matrix of the
+\textbf{Cartier} operator, sometimes distinguished in the literature from the
+\textbf{Hasse--Witt} matrix (which is its adjoint/transpose relative to Serre
+duality); see Achter--Howe, \emph{Hasse--Witt and Cartier--Manin matrices: a
+warning and a request}, arXiv:1710.10726, for a warning about this recurring
+confusion. The distinction has no bearing on any statement below: the rank (raw
+or stabilised) is invariant under transposition.
+\end{remark}
+
+\begin{remark}
+For $n=2$ the unique block $k=1$ satisfies $k_{\mathrm{out}}=1$ (since
+$1\cdot p\equiv1\pmod2$ for every odd $p$) and $N(1)=(p-1)/2$: we recover exactly
+the classical Cartier--Manin matrix. For $p\equiv1\pmod n$, $p^{-1}\equiv1\pmod n$
+so $k_{\mathrm{out}}=k$ for all $k$: the matrix is block diagonal (each block
+closes on itself). For $p\not\equiv1\pmod n$ the blocks are permuted along the
+orbits of $k\mapsto k\,p^{-1}\bmod n$; Theorem~\ref{thm:A}, written with the full
+$g\times g$ matrix (and not block by block), covers this case without
+modification.
+\end{remark}
+
+\section{Theorem B: the $p$-rank is the stabilised rank, not the raw rank}
+
+This is the point we first missed. The construction of Theorem~\ref{thm:A} has
+been correct from the start; the error, identified only after a systematic
+comparison with an independent point count, was to read the $p$-rank as
+$\rg(M)$ instead of the stabilised rank under iteration.
+
+\begin{lemma}[Rank stabilisation -- Fitting]
+\label{lemma:fitting}
+Let $T:V\to V$ be an $\F_p$-linear endomorphism of a finite-dimensional vector
+space of dimension $g$. The sequence $(\rg(T^m))_{m\ge1}$ is non-increasing and
+stabilises for $m\ge g$: there is $N\le g$ with
+$\rg(T^N)=\rg(T^{N+1})=\cdots$, and for this $N$,
+$$V=\Ker(T^N)\oplus\operatorname{Im}(T^N),$$
+with $T$ bijective on $\operatorname{Im}(T^N)$ and nilpotent on $\Ker(T^N)$.
+\end{lemma}
+
+\begin{proof}
+$\operatorname{Im}(T^{m+1})=T(\operatorname{Im}(T^m))\subseteq\operatorname{Im}(T^m)$
+gives the (weak) decrease of the dimensions. A non-increasing sequence of
+integers in $\{0,\dots,g\}$ cannot decrease strictly more than $g$ times, so it
+stabilises at some index $N\le g$. For such an $N$, $\rg(T^N)=\rg(T^{2N})$ implies
+$\operatorname{Im}(T^N)=\operatorname{Im}(T^{2N})=T^N(\operatorname{Im}(T^N))$, so
+$T^N$ (hence $T$) is surjective, hence bijective, on $\operatorname{Im}(T^N)$:
+this is the classical Fitting lemma. The restriction of $T$ to $\Ker(T^N)$ is
+nilpotent by definition of $\Ker(T^N)$, and $V=\Ker(T^N)\oplus\operatorname{Im}(T^N)$
+follows from the rank--nullity theorem applied to $T^N$ together with
+$\Ker(T^N)\cap\operatorname{Im}(T^N)=0$ (if $v\in\operatorname{Im}(T^N)\cap\Ker(T^N)$,
+write $v=T^Nw$; since $T^N$ is bijective on $\operatorname{Im}(T^N)$ and
+$T^N v=0$, we get $v=0$).
+\end{proof}
+
+\begin{theorem}[$p$-rank = stabilised rank of the Cartier matrix]
+\label{thm:B}
+Let $M(\sigma)$ be the matrix of the generalised Cartier operator
+(Theorem~\ref{thm:A}) evaluated at a point $\sigma\in\F_p^\times$. The $p$-rank
+of $\mathrm{Jac}(\mathcal{C}_\sigma)$ equals the stabilised rank $\rg(M(\sigma)^N)$
+of Lemma~\ref{lemma:fitting} (for $N\le g$ such that the sequence has
+stabilised), \textbf{and not} necessarily $\rg(M(\sigma))$.
+\end{theorem}
+
+\begin{proof}[Justification]
+The $p$-rank of $\mathrm{Jac}(\mathcal{C})$ is, by definition, the dimension of
+the \'etale part of $\mathrm{Jac}(\mathcal{C})[p]$; via the Dieudonn\'e module
+theory of $\mathrm{Jac}(\mathcal{C})[p]$ (identified with
+$H^1_{\mathrm{dR}}(\mathcal{C}/\F_p)$ equipped with the Frobenius $F$ and
+Verschiebung $V$ operators, cf.\ Oda, \emph{The first de Rham cohomology group
+and Dieudonn\'e modules}, Ann.\ Sci.\ ENS 1969), it is the dimension of the
+maximal subspace on which $F$ (equivalently, by Serre duality, the Cartier
+operator $C=V$ on $H^0(\Omega^1)$) acts \textbf{bijectively} --- that is, exactly
+$\dim\operatorname{Im}(M^N)$ in the Fitting decomposition of
+Lemma~\ref{lemma:fitting}, and not $\rg(M)$ in general. The two coincide if and
+only if $M$ has no non-trivial Jordan block at eigenvalue $0$, which is not
+guaranteed a priori for a block matrix such as that of Theorem~\ref{thm:A} when
+$n\ge3$.
+\end{proof}
+
+\begin{remark}
+We do not claim to reprove here Oda's identification of $H^1_{\mathrm{dR}}$ with
+the Dieudonn\'e module: it is a classical theorem that we cite, exactly as the
+case $n=2$ relies, without reproving it, on the classical results relating the
+$p$-rank to the Cartier--Manin matrix (Manin for the Hasse--Witt matrix; Yui for
+the product $M\,M^{(p)}\cdots M^{(p^{g-1})}$ over $\F_q$, whose rank is the $p$-rank;
+over $\F_p$ this product is $M^g$). The rank of $M$ alone only gives $g$ minus the
+$a$-number. What we establish
+ourselves, with a complete proof (Lemma~\ref{lemma:fitting}), is that the
+\emph{``rank''} to take in this classical statement is the stabilised rank under
+iteration, not the raw rank --- a distinction invisible in all the hyperelliptic
+$n=2$ cases tested in this project (where stabilisation always occurred at the
+first iteration, though we cannot assert here that this is always so), but which
+shows up from $n=3$ on.
+\end{remark}
+
+\section{A complete worked example}
+
+Take $n=3$, $d=4$, $r=1$, $p=7$. Then $g=(n-1)(d-1)/2=3$, with
+$g_1=\lfloor4/3\rfloor=1$ and $g_2=\lfloor8/3\rfloor=2$. Since
+$p=7\equiv1\pmod3$, the blocks close on themselves ($k_{\mathrm{out}}=k$), with
+$N(1)=2$ and $N(2)=4$.
+
+\paragraph{Case $\sigma=1$.} The block $k=1$ is $1\times1$ and zero (no edge in
+the support). The block $k=2$ is
+$M^{(2)}=\left(\begin{smallmatrix}5&5\\4&4\end{smallmatrix}\right)\pmod7$
+(direct computation by the formula of Theorem~\ref{thm:A}, with $f=1+x+x^4$ and
+$N(2)=4$), of rank $1$. The sequence of iterated ranks is $(1,1,1,\dots)$:
+stable from the start. Total
+stabilised rank $=0+1=1$. \emph{Independent check} (point count over $\F_{7^m}$,
+$m=1,\dots,6$, polynomial $L$ reconstructed by the Newton identities): true
+$p$-rank $=1$. \textbf{Exact agreement.}
+
+\paragraph{Case $\sigma=3$.} The block $k=2$ is (still by the formula of
+Theorem~\ref{thm:A})
+$M^{(2)}=\left(\begin{smallmatrix}3&1\\5&4\end{smallmatrix}\right)\pmod7$, of rank
+$1$ -- \textbf{but} $\big(M^{(2)}\big)^2=0\pmod7$: the sequence of iterated
+ranks is $(1,0,0,\dots)$. Total stabilised rank $=0$ (the block $k=1$ is $[0]$). \emph{Independent check}: true
+$p$-rank $=0$. \textbf{Exact agreement} -- whereas the \emph{non-stabilised} rank
+$\rg(M)=1$ would have been wrong.
+\begin{remark}
+This second case is precisely the one where a naive reading of the rank (without
+iteration) produces a wrong result -- and it is by confronting this error with
+an independent point count that Theorem~\ref{thm:B} was isolated.
+\end{remark}
+
+\section{Independent verification}
+
+The two theorems above were tested, for each configuration $(p,n,d,r,\sigma)$,
+against a \textbf{second, entirely independent method}: direct point counting of
+$\mathcal{C}_\sigma$ over $\F_{p^m}$ for $m=1,\dots,2g$ (finite fields built via
+discrete logarithms, without using Cartier theory), reconstruction of the
+polynomial $L(T)=\sum c_kT^k$ by the Newton identities from the power sums
+$s_m=p^m+1-\#\mathcal{C}(\F_{p^m})$ (exact integer arithmetic, checked to be
+integral at each step), then reading off the $p$-rank on the $p$-adic Newton
+polygon of $L(T)$ (length of the slope-zero segment).
+
+\begin{center}
+\begin{tabular}{llccc}
+Regime & Configurations tested & \# cases & \# agreements & \\\hline
+$n=2$, control & $d$ odd, various $(r,\sigma,p)$ & 3 & 3 \\
+$n=3$, $p\equiv1\!\!\pmod3$ & stable blocks, various $\sigma$ & 4 & 4 \\
+$n=3$, $p\equiv2\!\!\pmod3$ & exchanged blocks ($k\leftrightarrow3{-}k$) & 6 & 6 \\
+$n=4$, $p\equiv1\!\!\pmod4$ & stable blocks & 3 & 3 \\
+$n=4$, $p\equiv3\!\!\pmod4$ & cycle of length $2$ between blocks & 2 & 2 \\\hline
+\textbf{Total} & & \textbf{18} & \textbf{18} &
+\end{tabular}
+\end{center}
+
+All tested cycles have length $\le2$; longer cycles are not covered by this check.
+Reproducible code is provided in the accompanying package (see
+\S\ref{sec:avail}).
+
+\section{Catalogue of hidden vanishings and the corank pattern}
+
+\begin{definition}[Hidden vanishing, general case $y^n$]
+For a cycle $(i_0,i_1,\dots,i_{L-1})$ of the permutation $\sigma(i)=i\cdot
+p^{-1}\bmod n$, let $\Phi_{i_0}(\sigma)=M^{(i_{L-1})}\cdots M^{(i_1)}M^{(i_0)}$
+be the composed return map (square, $g_{i_0}\times g_{i_0}$, where $g_{i_0}$ is
+the dimension of the starting block). We say that $(n,p,d,r)$ exhibits a
+\textbf{hidden vanishing} at the cycle of $i_0$ if (a) the bipartite support
+graph of $\Phi_{i_0}$ admits a perfect matching ($\nu(G)=g_{i_0}$) and (b)
+$\mathrm{rk}\big(\Phi_{i_0}(\sigma)\big)<g_{i_0}$ for \textbf{every}
+$\sigma\in\mathbb F_p$ (tested exhaustively, $f$ squarefree).
+\end{definition}
+
+\begin{remark}[Terminology: Fermat-type cases]
+In a ``Fermat-type'' case $\det\Phi\not\equiv0$ as a polynomial in $\sigma$, but
+$\det\Phi$ vanishes at every $\sigma\in\F_p^\times$ (it is divisible by
+$\sigma^{p-1}-1$). These cases satisfy the Definition (b) only because
+$\sigma$ is restricted to $\F_p$; they are degenerate exactly at
+$\sigma^{p-1}=1$, so they are \emph{not} hidden vanishings in the formal sense
+($\det\Phi\equiv0$), and we keep a distinct name for them. A hand-checkable instance is
+$(n,p,d,r)=(9,17,16,3)$ and $k=2$: with $k_1=7$, $g_0=3$, $g_1=12$, $N_0=13$, $N_1=3$, the
+$3\times3$ return map satisfies $\det\Phi\equiv8(\sigma^{16}-1)\pmod{17}$
+\textbf{[V]} (symbolic computation, confirmed numerically for all $\sigma\in\F_{17}^\times$).
+\end{remark}
+
+\begin{remark}[Combinatorial filter]
+Condition (a) is checked in negligible time (maximum bipartite matching,
+Kuhn's algorithm) and \textbf{before} any numerical rank computation: by the
+Leibniz expansion, $\det\Phi_{i_0}=\sum_\pi
+\mathrm{sgn}(\pi)\prod_i(\Phi_{i_0})_{i,\pi(i)}$ contains only terms indexed by
+the perfect matchings of the support; if $\nu(G)<g_{i_0}$ no term can be
+non-zero and $\det\Phi_{i_0}\equiv0$ \textbf{trivially}, with no algebraic
+coincidence at play. This filter thus eliminates, for free, all
+non-\emph{hidden} vanishings before the exhaustive sweep of (b), the only costly
+step --- which is what makes a sweep over several thousand families $(n,d,r,p)$
+practicable.
+\end{remark}
+
+\begin{proposition}[Survey result]
+A combinatorial sweep (filter (a), then exhaustive sweep of (b) on the
+survivors) covering $n=3,\dots,15$, $d=2,\dots,25$ ($\gcd(d,n)=1$), all $r$,
+primes $p\in\{3,\dots,47\}$ ($\gcd(p,n)=1$, $g\le20$), produces
+\textbf{233 confirmed hidden vanishings}. Three of them were cross-checked
+against an independently written implementation (no shared code), with exact
+agreement.
+\end{proposition}
+
+\begin{remark}[Empirical pattern: corank almost always 1]
+Over the 233 cases, the deficit $g_{i_0}-\mathrm{rk}\big(\Phi_{i_0}(\sigma)\big)$
+(maximised over $\sigma$) equals $1$ in $201/233$ cases ($86\%$), and this is not
+an artefact of small blocks: restricting to the cases $g_{i_0}\ge4$, the deficit
+is still $1$ in $175/206$ cases ($85\%$). In other words, when a hidden
+vanishing occurs it almost always corresponds to a single missing linear
+relation (corank exactly $1$), and not to a deep degeneration --- generalising,
+beyond the isolated case $g_{i_0}=2$ (where corank $1$ is trivial), the
+outer-product structure observed on the example $(n,d,r,p)=(3,4,1,7)$ (\S4).
+The remaining $14\%$ (deficit $2$, and $2$ isolated cases of deficit $3$ and
+$4$) remain to be explained; an immediate lead is to check whether an iterated
+outer-product structure (corank $k$ via $k$ independent relations) can be seen
+directly on the matrices.
+\end{remark}
+
+\section{Block theory and corank (results proved by hand)}
+\label{sec:blocs}
+
+\emph{Statuses used throughout:} \textbf{[D]} proved (hand proof, written in
+the accompanying note \texttt{proofs\_blocks.tex}); \textbf{[V]} checked numerically on a
+finite set of cases, not proved; \textbf{[O]} open.
+
+Write $k'=k_{\mathrm{out}}$ and, for the block $M^{(k)}$ (of size
+$g_{k'}\times g_k$), $N=N(k)<p$, $j=p-1-N$, $m=\lfloor dj/p\rfloor$. The entries
+are $M^{(k)}[b,i]=[x^{pb-i}]f^N$ (Th.~\ref{thm:A}). Since $N<p$, the
+multinomial coefficients of $f^N$ are non-zero modulo $p$: the \emph{support} of
+$M^{(k)}$ is purely combinatorial. Put $L(G)=fG'-jf'G$.
+
+\begin{theorem}[Kernel of a block, \textbf{[D]}]
+\label{thm:noyau}
+$\Ker M^{(k)}$ is isomorphic to the space of polynomials $G$ of degree
+$\le dj$ such that $\deg L(G)\le g-1$ (explicit isomorphism, see
+\texttt{proofs\_blocks.tex}, Th.~2). There is a basis $(h_M)$ of the corresponding
+subspace (Prop.~6) and
+$$\operatorname{corank}M^{(k)}=m-\operatorname{rk}A,\qquad
+A_{M,e}=[x^e]\,L(P_M),\quad e\in[g,d-2]\quad(\text{Th.~7}).$$
+\end{theorem}
+
+\begin{theorem}[Duality law (K), \textbf{[D]}]
+\label{thm:K}
+The corank $\kappa_k$ of the block $M^{(k)}$ (Th.~\ref{thm:noyau}) satisfies
+$\kappa_k=\dim\operatorname{coker}M^{(n-k)}$ (law (K), Th.~10 of the accompanying
+note), and
+$$\operatorname{rk}M^{(k)}-\operatorname{rk}M^{(n-k)}=g_k+g_{k'}-(d-1)\quad(\text{Cor.~11}).$$
+In particular, for a self-dual $2$-cycle $k_1=n-k_0$, the two blocks have the
+same rank.
+\end{theorem}
+
+\begin{remark}[Antecedents]
+The block formula of Th.~\ref{thm:A} already appears in Hase-Liu and
+Triantafillou (arXiv:1709.02442); see also Sutherland (arXiv:2004.10189), Elkin,
+Johnston. We do not present it as new. The statements of
+Th.~\ref{thm:noyau}--\ref{thm:K} (description of the kernel by the differential
+equation $L(G)$ and the duality law) were not found in any of the sources
+consulted, but no zbMATH/MathSciNet-type database could be queried:
+\textbf{no claim of novelty}.
+\end{remark}
+
+\subsection*{Cycles of length 2: decomposition formula}
+
+For a $2$-cycle $(k_0,k_1)$ put $M_0=M^{(k_0)}$, $M_1=M^{(k_1)}$ and
+$\Phi=M_1M_0$ ($g_0\times g_0$). Then \textbf{[D]}
+$$\dim\Ker\Phi=\dim\Ker M_0+\dim(\operatorname{Im}M_0\cap\Ker M_1),$$
+and the intersection is the radical of a bilinear form
+$-\mathrm{Res}_0\big(G_1(f\nu'+(j_1+1)f'\nu)\,dx\big)$ on $W_{k_1}\times N_0$
+(the two factors live in different spaces: no isotropy test is available).
+
+\subsection*{The case $d=p$}
+
+For $d=p$ and a $2$-cycle ($N_0=g_1$, $N_1=g_0$), put
+$\beta(j)\equiv -j\,r^{-1}\pmod p$ and $t(j)=(j+r\beta(j))/p$.
+
+\begin{lemma}[Lemmas A and B, \textbf{[D]}]
+\label{lem:AB}
+(A) $\Phi=\sum_b K_1[a,b]\,\sigma^{\beta(b)}K_0[b,i]\,\sigma^{\beta(i)}$: each
+entry of $\Phi$ factors in two stages, where $K_0,K_1$ are numerical matrices
+(multinomials) and $\sigma^{\beta}$ powers of the parameter. (B) The supports of
+$K_0,K_1$ are explicit \emph{windows} (bands) in $(b,\beta(b))$.
+\end{lemma}
+
+An index $b$ is called \emph{active} if $\beta(b)\in[1,g_0]$ and the
+corresponding row of $K_0$ and column of $K_1$ are non-zero.
+
+\begin{proposition}[Active-count criterion, \textbf{[D]}]
+$\operatorname{rk}\Phi\le\#\{\text{active}\}$; $K_1[\cdot,\mathrm{act}]$ always
+has full rank, so $\Phi$ is degenerate \emph{if and only if}
+$K_0[\mathrm{act},\cdot]$ is singular. In the $133/135$ cases studied, the
+singularity is expressed by a Hall violation visible on a prefix of columns
+ordered by decreasing $\beta$ (violation sizes: $1{:}93$, $2{:}32$, $3{:}4$,
+$4{:}2$, $6{:}1$, $10{:}1$).
+\end{proposition}
+
+For general $d$, \textbf{[D, case by case]}:
+$\operatorname{rk}\Phi\le\min(\nu(S_0),\nu(S_1),\#\text{active})$, where
+$S_0,S_1$ are the combinatorial supports and $\nu$ the maximum matching; this
+criterion explains $39$ of the $143$ cases of the catalogue.
+
+\subsection*{Cases studied by hand \textbf{[D]}}
+For the following families $(n,p,d,r,k_0,k_1)$ the degeneracy is proved by hand:
+$(6,17,17,10,1,5)$, $(5,19,19,6,1,4)$, $(9,17,7,2,4,5)$, $(9,17,10,3,4,5)$ (rank
+$M_0\le3$, kernel $(5\sigma^6,0,1,8\sigma^7)$, $\operatorname{coker}\simeq M_1$),
+$(5,29,18,6,2,3)$, and $(9,17,16,3,2,7)$ with $\det\Phi=8(\sigma^{16}-1)$.
+
+\section{Classification of the $143$ cases of the catalogue \textbf{[V]}}
+\label{sec:classif}
+
+On the $143$ cases $(n,p,d,r,\{k_0,k_1\})$ of the survey file
+(\texttt{scan2.json}), exact computation (Sage) gives:
+\begin{center}
+\begin{tabular}{lcl}
+Type & \# & Description\\\hline
+Support & 39 & $\operatorname{rk}\Phi\le\min(\nu(S_0),\nu(S_1),\#\mathrm{act})<g_0$\\
+Deficient block & 49 & $\operatorname{rk}M_0<g_0$ or $\operatorname{rk}M_1<g_0$ (Th.~\ref{thm:noyau}, law (K))\\
+Pure matching & 44 & $M_0,M_1$ of full rank, $\Phi$ deficient: \textbf{unexplained}\\
+Fermat & 11 & $\det\Phi(s)$ divisible by $s^{p-1}-1$, generically invertible\\\hline
+Total & 143 &
+\end{tabular}
+\end{center}
+The $39+49+44=132$ cases are ``formal'' (degeneracy for every $\sigma$ in an
+algebraic closure); the $11$ Fermat-type cases are degenerate for every squarefree
+$\sigma\in\F_p^\times$ but not formally.
+
+\paragraph{Fermat mechanism.} For $\sigma\in\F_p^\times$ the exponents fold
+modulo $p-1$; a gauge lemma modulo $p-1$ \textbf{[D]} shows that $\det\Phi$ is a
+polynomial in $\sigma^{p-1}$ times a power of $\sigma$. We observe
+$\det\Phi(1)=0$ in the $11$ cases \textbf{[V]}, and a grading modulo $p-1$ in
+$6/11$. Examples: $(9,17,16,3,2,7)$, $\det\Phi=8(\sigma^{16}-1)$;
+$(8,5,21,8,3,7)$, $\det=2s^9(s^4-1)$. For $\sigma$ in an extension, the $p$-rank
+involves Frobenius-twisted products of $\Phi$: not treated here.
+
+\paragraph{Other observations \textbf{[V]}.}
+(i) $23/143$ cases have $\gcd(d,r)>1$: then $f=h(x^e)$ and $\Phi$ decomposes by
+classes modulo $e$; counting classes explains only $5$ cases (family $d=18$,
+Hall type). (ii) Monomial kernels: $19/44$ of the kernels of the pure-matching
+cases, and $46/48$ of those of the deficient-block cases. (iii) $p$-adically,
+for $M_0$ integral at $\sigma=1,2$, there is an elementary divisor of valuation
+exactly $1$ in $88/90$ deficient evaluations. (``$p\mid\det$'' alone is
+tautological and is not a clue.)
+
+\paragraph{Link with the case $n=2$.} In the author's work on $y^2$, mechanism B
+is a deployment by monomial gauge $M_{ij}=c_{ij}\sigma^{a_i+b_j}$. In $y^n$ the
+entries of $\Phi$ are not monomial in the $10$ hidden cases $d=p$: the structure
+has two stages (Lemma~\ref{lem:AB}).
+
+\section{A combinatorial Menger criterion}
+\label{sec:menger}
+
+\subsection*{The general case (any $d$, any $2$-cycle)}
+
+For a $2$-cycle $(k_0,k_1)$ put $M_0=M^{(k_0)}$ ($g_1\times g_0$),
+$M_1=M^{(k_1)}$ ($g_0\times g_1$) and $\Phi=M_1M_0$. Let $\mathcal G$ be the
+oriented graph in three layers $a\to b\to i$, with $a\in[1,g_0]$ (rows of $M_1$),
+$b\in[1,g_1]$ (intermediate indices), $i\in[1,g_0]$ (columns of $M_0$), with an
+edge $a\to b$ if $M_1[a,b]\neq0$ and $b\to i$ if $M_0[b,i]\neq0$. Let $\Delta$
+be the maximum number of pairwise disjoint paths $a\to b\to i$ (maximum flow with
+unit vertex capacities).
+
+\begin{theorem}[Menger, \textbf{[D]}]
+\label{thm:menger}
+If $\Delta<g_0$, then $\det\Phi\equiv0$ (identically in $\sigma$), for every $d$.
+\end{theorem}
+
+\begin{proof}
+By Cauchy--Binet, $\det\Phi=\sum_S A_SB_S$, where $S$ runs over the subsets of
+$g_0$ indices of $[1,g_1]$, $A_S=\det M_1[\,\cdot\,,S]$ and
+$B_S=\det M_0[S,\,\cdot\,]$. By Leibniz, $A_S\neq0$ requires a perfect matching of
+the rows $a$ into $S$ in the support of $M_1$, and $B_S\neq0$ a perfect matching
+of $S$ onto the columns $i$ in the support of $M_0$. If such an $S$ exists, the
+two matchings compose into $g_0$ disjoint paths $a\to b\to i$, so $\Delta=g_0$.
+By contraposition, $\Delta<g_0$ implies $A_SB_S=0$ for all $S$, hence
+$\det\Phi=0$. For a cycle of length $L$ one replaces the two stages by $L$
+stages. \end{proof}
+
+This criterion is strictly finer than the perfect-matching criterion on the
+support of $\Phi$ (Remark of \S\ref{sec:classif}): the Boolean product of the
+supports may admit a perfect matching although no injective factorisation
+$a\to b\to i$ exists. On the $91$ cases of the sweep ($p\equiv-1\pmod n$,
+$d\le25$, $p\le47$, blocks of full rank, support of $\Phi$ with a perfect
+matching), Theorem~\ref{thm:menger} explains \textbf{$37$ of the $67$ formal
+cases} (status \textbf{[V]} for the counts, \textbf{[D]} for the implication);
+in the $37$ cases the flow deficiency is exactly $1$.
+
+\subsection*{The case $d=p$: closed criterion}
+
+\begin{proposition}[\textbf{[D]}]
+\label{prop:NG}
+Let $d=p$ and $(k_0,k_1)$ a $2$-cycle. Then $N(k_1)=g_0$ and $N(k_0)=g_1$.
+\end{proposition}
+
+\begin{proof}
+$p^2\equiv1\pmod n$ gives $k_1\equiv k_0p\pmod n$ with $0<k_1<n$; the Euclidean
+division $k_0p=n\,g_0+k_1$ (since $g_0=\lfloor k_0p/n\rfloor$) gives
+$g_0=(k_0p-k_1)/n=N(k_1)$. Likewise for $g_1$. \end{proof}
+
+Put $c(v)=\lceil rv/p\rceil$, $w(v)=v-c(v)$, $\beta(v)=p\,c(v)-rv$.
+
+\begin{lemma}[supports by intervals, \textbf{[D]}]
+\label{lem:interv}
+For $d=p$: $M_1[a,b]\neq0$ if and only if there is $v\in[1,g_0]$ with
+$b=\beta(v)\le g_1$ and $a\in I_v:=[c(v),\,g_0-w(v)]$; $M_0[b,i]\neq0$ if and
+only if there is $v\in[1,g_1]$ with $i=\beta(v)\le g_0$ and
+$b\in J_v:=[c(v),\,g_1-w(v)]$.
+\end{lemma}
+
+\begin{proof}
+$M_1[a,b]=[x^{pa-b}]f^{g_0}$ is a sum of multinomials
+$\binom{g_0}{u,v,\cdot}\sigma^v$ over $pu+rv=pa-b$, $u+v\le g_0$; they are
+non-zero modulo $p$ because $g_0<p$. Since $1\le b\le g_1<p$, we have
+$b\equiv-rv\pmod p$; $v=0$ is excluded (then $b\equiv0$), and $v\le g_0<p$, so
+$b=\beta(v)$ for a unique $v$, with $pa-b=pu+rv$, i.e.\ $u=a-c(v)\ge0$ and
+$u+v\le g_0$, that is $a\le g_0-w(v)$. Same argument for $M_0$ (with
+$N(k_0)=g_1$). \end{proof}
+
+Since $c$ and $w$ are non-decreasing, the intervals $I_v$ (resp.\ $J_v$) are
+\textbf{nested decreasing}: $I_{v+1}\subseteq I_v$.
+
+\begin{theorem}[Menger criterion for $d=p$, \textbf{[D]}]
+\label{thm:dp}
+Let $V_I=\{v(i)=(-i\,r^{-1})\bmod p:1\le i\le g_0\}$, $v_m=\min V_I$ and
+$B^*=\{\beta(v):1\le v\le g_0,\ \beta(v)\le g_1,\ \beta(v)\in J_{v_m}\}$. Then
+$\Delta=g_0$ if and only if:
+\begin{enumerate}
+\item every $v\in V_I$ satisfies $v\le g_1$;
+\item $|B^*|=g_0$;
+\item for every $v_0\in V_I$: $\#\{v\in V_I:v\ge v_0\}\le\#(J_{v_0}\cap B^*)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\emph{Stage 1} ($a\to b$). For a set $V''$ of columns of $M_1$ of smallest index
+$v_0$, $N(V'')=I_{v_0}$ (nesting), of length $g_0-v_0+1$; the distinct $v$ lie in
+$[v_0,g_0]$, so $|V''|\le g_0-v_0+1$: Hall's condition holds, all usable columns
+get matched, and the matching saturates the rows $a$ if and only if
+$|B^*|=g_0$ (condition 2). \emph{Stage 2} ($i\to b$). Same argument with the
+$J_v\cap B^*$: Hall's condition for the $g_0$ columns $i$ reduces to
+$\#\{v\in V_I:v\ge v_0\}\le\#(J_{v_0}\cap B^*)$ for every $v_0\in V_I$
+(condition 3); condition 1 is the non-vacuity of the columns.
+\emph{Composition.} If both stages saturate, we have two bijections
+$a\leftrightarrow B^*\leftrightarrow i$ (since $|B^*|=g_0$), whose composition
+gives $g_0$ disjoint paths. Conversely $g_0$ disjoint paths give the two
+matchings, hence the conditions. \end{proof}
+
+\paragraph{Check \textbf{[V]}.} On $6104$ cases with $d=p$ and a $2$-cycle
+($n\le12$, $p\le47$, all $r$, all $k_0$), the formula of Lemma~\ref{lem:interv}
+reproduces exactly the supports of $M_0,M_1$ ($6104/6104$), and the criterion of
+Theorem~\ref{thm:dp} coincides with the exact flow ($6104/6104$). Among these
+cases: $5710$ of support type ($\nu(\Phi)<g_0$), $107$ of hidden Menger type,
+$287$ with $\Delta=g_0$ (formal, Fermat or zero-minor candidates); all $107$ fail
+at the second stage ($85$ at both stages, $22$ at the second only) and none has
+three layers.
+
+\begin{remark}[Beyond $d=p$]
+For $d\neq p$ the support of a column is a union of intervals (a point $(u,v)$ of
+the lattice $du+rv=pa-b$, two parameters): over $1500$ blocks, the columns are
+contiguous in $68/68$ cases $d=p$, but only $353/811$ (M1) and $226/811$ (M0)
+for $d<p$, and $366/622$ and $84/622$ for $d>p$. There is thus no interval
+criterion: for $d\neq p$ Theorem~\ref{thm:menger} remains an exact and fast test
+(flow), without a closed formula. The $7$ three-layer cases (an obstruction that
+appears neither at stage 1 alone nor at stage 2 alone) are all cases $d>p$.
+\end{remark}
+
+\section{The observed mechanisms}
+\label{sec:meca}
+
+On the $91$ pure-matching cases of the sweep $p\equiv-1\pmod n$, $d\le25$,
+$p\le47$ (blocks of full rank, $\nu(\Phi)=g_0$): the exact computation of
+$\det\Phi(s)$ as a polynomial in $s$ gives $67$ \emph{formal} cases
+($\det\Phi\equiv0$) and $24$ Fermat-type cases ($\det\Phi\ne0$, zero on
+$\F_p^\times$). The corank equals $1$ in all $91$ cases \emph{of this family}
+$p\equiv-1\pmod n$ (outside this family it is not true: \S\ref{sec:corang}). The
+$67$ formal cases are distributed as follows (\textbf{[V]}):
+
+\begin{center}
+\begin{tabular}{lcl}
+Mechanism & Cases & Status\\\hline
+1. Menger obstruction ($\Delta<g_0$) & $37$ & \textbf{[D]} implication, \textbf{[V]} count\\
+2. Zero minor with non-empty support & $16$ tested, $12$ not tested & arithmetic coincidence\\
+3. Cancellation between non-zero terms & $2$ & by-hand example: \S\ref{sec:stylo}\\\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Mechanism 1.} See \S\ref{sec:menger}; on the $37$ cases the flow
+deficiency is $1$; $30$ are explained by a Hall condition at a single stage ($13$
+at both, $9$ stage 2 only, $8$ stage 1 only) and $7$ require three layers. For
+$7$ cases whose cut contains only vertices $b$, the columns used by $M_1$ are
+essentially $b_a=a(p-r)$ (term $(\sigma x^r)^a$, or $a(p-d)$ for the term
+$(x^d)^a$); the last $b_a$ fall outside the window of rows of $M_0$, and Hall
+fails (example $(6,17,17,10,1,5)$: M1 only reaches $b=7$ for $a=1$ and
+$b\in\{7,14\}$ for $a=2$, M0 has no row $14$).
+
+\paragraph{Mechanism 2.} When $N(k_1)$ is small, $M_1$ is almost monomial and
+forces $S$; $B_S$ is then a small determinant of multinomials. Reading through
+the \emph{cube} of multinomials $C[u,v,w]=N!/(u!v!w!)$ ($u+v+w=N$): four points
+$A,B,C,D$ with $A+D=B+C$ (automatic) give a vanishing $2\times2$ minor if and
+only if $R=\prod_c B_c!C_c!/(A_c!D_c!)\equiv1\pmod p$. Example
+$(8,23,23,17,1,7)$: $A=(3,4,13)$, $B=(0,8,12)$, $C=(9,4,7)$, $D=(6,8,6)$,
+$R=588/13$, $588-13=25\cdot23$. Example $(7,13,22,14,1,6)$: $A=(7,1,3)$,
+$B=(5,4,2)$, $C=(10,0,1)$, $D=(8,3,0)$, $R=20/7$, $20-7=13$. In both cases
+$R-1$ equals exactly $p$ times a unit. Statistically (\textbf{[V]}, monomial
+entries) the proportional pairs of rows of $M_0$ are $239/7166$ for $g_0=2$
+(expected $1/p$: $299$) and the pairs forced by $M_1$ are $18/740$ (expected
+$27$); for $g_0=3$, $1722$ zero determinants for $t=1$ distinct exponent
+(expected $5100$), $39$ for $t=2$ ($66$), $0$ for $t\ge3$. There is no excess of
+cancellations compared with chance: \emph{no arithmetic law is apparent} for this
+mechanism (\textbf{[O]}).
+
+\paragraph{Common kernel of layers.} The classical idea: if
+$\Phi(s)=\sum_tC_ts^t$ and $W=\bigcap_t\ker C_t\neq0$, then
+$\operatorname{rk}\Phi(s)\le g_0-\dim W$ for every $s$ (\textbf{[D]}, trivial).
+On our $67$ formal cases, this criterion (raw coefficients or after the smallest
+monomial gauge) detects only $11$, of which $10$ are already detected by Menger;
+it adds a single case. The converse is false
+($\bigl(\begin{smallmatrix}1&t\\t&t^2\end{smallmatrix}\bigr)$).
+
+\paragraph{Fermat.} $24$ cases, $\det\Phi\ne0$ as a polynomial, zero on
+$\F_p^\times$ (\S\ref{sec:fermat} for the structure and a by-hand example,
+$(8,3,5,1,5)$); examples $\det=8(\sigma^{16}-1)$ for $(9,17,16,3,2,7)$. None has
+a common kernel, none is of Menger type (flow $=g_0$): this is an effect of the
+folding of exponents modulo $p-1$, not yet explained in detail (\textbf{[O]}).
+
+\section{A degree law and two complete by-hand proofs}
+\label{sec:stylo}
+
+This section contains only \textbf{[D]} statements: each computation is done by
+hand, without a machine. Notation: for a $2$-cycle $(k_0,k_1)$,
+$M_0=M^{(k_0)}$ ($g_1\times g_0$), $M_1=M^{(k_1)}$ ($g_0\times g_1$),
+$\Phi=M_1M_0$, with $M^{(k)}[b,i]=[x^{pb-i}]\,f^{N(k)}$ and $N(k)<p$. For
+$S\subset[1,g_1]$ of cardinality $g_0$, $A_S$ (resp.\ $B_S$) is the minor of $M_1$
+on the columns $S$ (resp.\ of $M_0$ on the rows $S$); by Cauchy--Binet,
+$\det\Phi=\sum_SA_SB_S$. We write $T=g_0(g_0+1)/2$ and $\Sigma S=\sum_{b\in S}b$.
+
+\begin{proposition}[degree law, \textbf{[D]}]
+\label{prop:deg}
+Let $S$ be as above. Expand $A_SB_S$ by Leibniz and each entry into its
+multinomial terms $c\,x^{du+rv}\sigma^v$ (with $du+rv=pb-i$ for the entry
+$(b,i)$). For a term of the product, let $U=\sum u$ and $V=\sum v$ be the totals
+($V$ is the degree in $\sigma$). Then
+$$d\,U+r\,V=(p-1)\,(T+\Sigma S).$$
+\end{proposition}
+
+\begin{proof}
+A term of $A_S$ chooses a bijection $\pi:[1,g_0]\to S$ and an entry
+$(a,\pi(a))$ of $M_1$ for each $a$; a term of $B_S$ chooses a bijection
+$\rho:S\to[1,g_0]$ and an entry $(b,\rho(b))$ of $M_0$ for each $b\in S$. The sum
+of the exponents of $x$ is
+$$\sum_{a=1}^{g_0}\bigl(pa-\pi(a)\bigr)+\sum_{b\in S}\bigl(pb-\rho(b)\bigr)
+=pT-\Sigma S+p\,\Sigma S-T=(p-1)(T+\Sigma S),$$
+since $\pi$ and $\rho$ are bijections ($\sum_a\pi(a)=\sum_{b\in S}b=\Sigma S$ and
+$\sum_b\rho(b)=T$). But this sum also equals $dU+rV$. \end{proof}
+
+\begin{corollary}[\textbf{[D]}]
+Two terms of the same degree $V$ in $\sigma$, coming from $S$ and $S'$, satisfy
+$d\,(U-U')=(p-1)(\Sigma S-\Sigma S')$; in particular
+$d\mid(p-1)(\Sigma S-\Sigma S')$. For a single $S$, $rV\equiv(p-1)(T+\Sigma S)
+\pmod d$: $\Sigma S$ determines $V$ modulo $d/\gcd(d,r)$.
+\end{corollary}
+
+\subsection*{Example A: a cancellation between two non-zero terms}
+
+Take $(n,p,d,r,k_0)=(8,3,7,2,5)$: the curve $y^8=x^7+\sigma x^2+1$ over $\F_3$,
+of genus $g=(7)(6)/2=21$. Then $k_1=5\cdot3^{-1}=5\cdot3\equiv7\pmod 8$ (and
+$7\cdot3\equiv5$, so it is indeed a $2$-cycle), $g_0=\lfloor35/8\rfloor=4$,
+$g_1=\lfloor49/8\rfloor=6$, $N(k_0)=(7\cdot3-5)/8=2$, $N(k_1)=(5\cdot3-7)/8=1$.
+
+\emph{Blocks.} $f=1+\sigma x^2+x^7$; $M_1[a,b]=[x^{3a-b}]f$ gives
+$$M_1=\begin{pmatrix}\sigma&0&1&0&0&0\\0&0&0&\sigma&0&1\\0&1&0&0&0&0\\
+0&0&0&0&1&0\end{pmatrix}.$$
+Next $f^2=1+2\sigma x^2+\sigma^2x^4+2x^7+2\sigma x^9+x^{14}$ (all coefficients
+are $\not\equiv0\pmod3$), and $M_0[b,i]=[x^{3b-i}]f^2$ gives
+$$M_0=\begin{pmatrix}2\sigma&0&1&0\\0&\sigma^2&0&2\sigma\\0&2&0&0\\
+0&0&2\sigma&0\\1&0&0&0\\0&0&0&1\end{pmatrix}.$$
+
+\emph{Which $S$ matter.} The rows of $M_1$ have supports
+$\{1,3\},\{4,6\},\{2\},\{5\}$: $A_S\ne0$ requires $2,5\in S$, one element of
+$\{1,3\}$ and one of $\{4,6\}$, i.e.\ $S\in\{\{1,2,4,5\},\{1,2,5,6\},\{2,3,4,5\},
+\{2,3,5,6\}\}$. The rows of $M_0$ have supports
+$\{1,3\},\{2,4\},\{2\},\{3\},\{1\},\{4\}$. For $S=\{1,2,4,5\}$: row $5$ forces
+column $1$, row $4$ column $3$, and row $1$ has no column left: $B_S=0$. For
+$S=\{2,3,5,6\}$: rows $3,5,6$ force $2,1,4$ and row $2$ has no column left:
+$B_S=0$. Two $S$ remain.
+
+\emph{$S=\{1,2,5,6\}$.} For $A_S$: row $1\mapsto$ column $1$ ($\sigma$), row
+$2\mapsto6$, row $3\mapsto2$, row $4\mapsto5$, i.e.\ the permutation of positions
+$(1,4,2,3)$, a $3$-cycle, of sign $+$: $A_S=\sigma$. For $B_S$ (rows
+$1,2,5,6$): $1\mapsto3$, $2\mapsto2$ ($\sigma^2$), $5\mapsto1$, $6\mapsto4$,
+permutation $(3,2,1,4)$, a transposition, of sign $-$: $B_S=-\sigma^2$. Hence
+$A_SB_S=-\sigma^3$.
+
+\emph{$S=\{2,3,4,5\}$.} $A_S$: rows $1\mapsto3$, $2\mapsto4$ ($\sigma$),
+$3\mapsto2$, $4\mapsto5$, positions $(2,3,1,4)$, $3$-cycle: $A_S=\sigma$. $B_S$
+(rows $2,3,4,5$): $2\mapsto4$ ($2\sigma$), $3\mapsto2$ ($2$), $4\mapsto3$
+($2\sigma$), $5\mapsto1$ ($1$), permutation $(4,2,3,1)$, a transposition:
+$B_S=-8\sigma^2$. Hence $A_SB_S=-8\sigma^3$.
+
+\begin{proposition}[\textbf{[D]}]
+\label{prop:exA}
+For $(n,p,d,r,k_0)=(8,3,7,2,5)$: $\det\Phi=-\sigma^3-8\sigma^3=-9\sigma^3$
+(identity in $\mathbb Z[\sigma]$), hence $\det\Phi\equiv0\pmod 3$ for every
+$\sigma\in\F_3$. Moreover $M_0,M_1$ have full rank $4$ for $\sigma\neq0$ (rows
+$3,4,5,6$ of $M_0$ have supports $\{2\},\{3\},\{1\},\{4\}$; the rows of $M_1$ have
+supports $\{1,3\},\{4,6\},\{2\},\{5\}$), and two $S$ are admissible, so that
+$\Delta=g_0=4$: the obstruction is not of Menger type. For $\sigma=2$ (the only
+smooth value in $\F_3^\times$: for $\sigma=1$, $x=1$ is a double root of $f$),
+$\operatorname{rk}\Phi<4$. Furthermore the degree law holds: for both $S$,
+$\Sigma S=14$, $T=10$, $(p-1)(T+\Sigma S)=48=7\cdot6+2\cdot3$ with
+$(U,V)=(6,3)$.
+\end{proposition}
+
+(That $f=1+2x^2+x^7$ is squarefree in $\F_3[x]$: $f'=x(1+x^5)$; $f(0)=1$; if
+$x^5=-1$ then $x^7=-x^2$ and $f=1+x^2$, hence $x^2=-1$, $x^4=1$, $x^5=x$, so
+$x=-1$, $x^2=1\ne-1$: contradiction.) This is a case of \emph{hidden vanishing}:
+the support of $\Phi$ has a perfect matching, the blocks have full rank, and yet
+$\operatorname{rk}\Phi<g_0$. The mechanism is a \emph{cancellation} $-1-8=-9\equiv0$
+between two non-zero products of the same degree. Note that $-9\equiv0$ even
+modulo $9$: it is a coincidence of small $p$, not yet a law.
+
+\subsection*{Example B: a Fermat-type case, $\det\Phi\neq0$ but zero on $\F_p^\times$}
+
+Take $(n,p,d,r,k_0)=(8,3,5,1,5)$: $y^8=x^5+\sigma x+1$ over $\F_3$, genus $14$.
+Here $k_1=7$, $g_0=\lfloor25/8\rfloor=3$, $g_1=\lfloor35/8\rfloor=4$,
+$N(k_0)=2$, $N(k_1)=1$, $f=1+\sigma x+x^5$. $M_1[a,b]=[x^{3a-b}]f$:
+$$M_1=\begin{pmatrix}0&\sigma&1&0\\1&0&0&0\\0&0&0&1\end{pmatrix}.$$
+$f^2=1+2\sigma x+\sigma^2x^2+2x^5+2\sigma x^6+x^{10}$ and $M_0[b,i]=[x^{3b-i}]f^2$:
+$$M_0=\begin{pmatrix}\sigma^2&2\sigma&1\\2&0&0\\0&0&2\sigma\\0&1&0\end{pmatrix}.$$
+Then $\Phi=M_1M_0$ has rows $\sigma\cdot(2,0,0)+(0,0,2\sigma)=(2\sigma,0,2\sigma)$,
+$(\sigma^2,2\sigma,1)$ and $(0,1,0)$. Expanding along the last row,
+$$\det\Phi=-\det\begin{pmatrix}2\sigma&2\sigma\\\sigma^2&1\end{pmatrix}
+=-(2\sigma-2\sigma^3)=2\sigma(\sigma^2-1).$$
+
+\begin{proposition}[\textbf{[D]}]
+\label{prop:exB}
+For $(8,3,5,1,5)$: $\det\Phi=2\sigma(\sigma^2-1)\in\F_3[\sigma]$, a \emph{non-zero}
+polynomial, which vanishes for every $\sigma\in\F_3^\times=\{1,2\}$. For
+$\sigma=2$ (the only smooth value: $f=1+2x+x^5$, $f'=2(1+x^4)$, and $x^4=-1$ with
+$f(x)=0$ would give $1+x=0$, i.e.\ $x^4=1\neq-1$),
+$\Phi=\begin{pmatrix}1&0&1\\1&1&1\\0&1&0\end{pmatrix}$ satisfies row\,2 $-$ row\,1 $=$
+row\,3: $\operatorname{rk}\Phi=2<3$, corank $1$. The blocks have rank $3$ and the
+support of $\Phi$ has a perfect matching.
+\end{proposition}
+
+\paragraph{Reading.} In example~A the determinant is identically zero; in
+example~B it is not, but it is divisible by $\sigma^{p-1}-1=\sigma^2-1$. These
+are the two types of the classification of \S\ref{sec:meca} (formal / Fermat),
+each with a representative that can be checked by hand. In both cases $p=3$: this
+is the value of $p$ most favourable to coincidences ($1+2\equiv0$), and we deduce
+no law from it.
+
+\section{Structure of the Fermat-type cases and new sweeps \textbf{[V]}}
+\label{sec:fermat}
+
+\paragraph{Coverage correction.} The sweeps of this section and of
+\S\ref{sec:corang} run over \emph{all} $r\in[1,d-1]$. An intermediate version of
+our scripts only examined $r\le d-r$, assuming the symmetry $x\mapsto1/x$; this
+symmetry is \textbf{false} for $y^n$ with $\gcd(d,n)=1$ (the change of variable
+turns the family into $y^n=t^{e}(\dots)$ with $e\equiv-d\pmod n$, a cover also
+ramified at $t=0$): for instance $(8,3,7,2,5)$ is hidden whereas $(8,3,7,5,5)$ is
+not ($15$ different labels on $101$ randomly drawn pairs $(r,d-r)$). The earlier
+catalogues ($91$, $143$, $6104$ cases) ran over all $r$.
+
+\paragraph{Complementary sweeps (all $r$).} (i) $n\le10$, $p\le31$, $d\le25$:
+$10415$ cases (not deduplicated by $k_0/n$), \emph{no anomaly} (the check
+``flow $<g_0\Rightarrow\det\Phi\equiv0$'' is a check of the code, the theorem
+being proved); $54$ Menger cases, $24$ formal cases outside Menger, $15$ of
+Fermat type, $186$ undecided ($g_0>8$). (ii) $p\in\{3,5,7\}$, $n\le24$, $d\le40$
+($8200$ distinct cases): $50$ Menger, $7$ formal outside Menger, $30$ of Fermat
+type, $353$ undecided ($g_0>8$). The union of the two, deduplicated by
+$(p,d,r,k_0/n)$, contains $21$ formal cases outside Menger, which the
+Cauchy--Binet computation separates as follows:
+\begin{center}
+\begin{tabular}{lcl}
+Mechanism & Distinct cases & Examples\\\hline
+Zero minor (each $A_SB_S=0$) & $14$ & $(8,23,23,17,1)$, $(5,29,16,13,2)$, $(8,5,9,1,3)$\\
+Cancellation between non-zero products & $7$ & $(8,3,7,2,5)$, $(8,3,11,4,5)$, $(3,11,20,6,1)$\\\hline
+\end{tabular}
+\end{center}
+Four of the seven cancellations have $p=3$, one $p=5$, two $p=11$: they are
+concentrated on small $p$, consistent with a coincidence of the type
+$1+2\equiv0$, though we have no law. (The domains of these tallies differ from
+that of the census of \S\ref{sec:v41}; they are not reconciled.)
+
+\paragraph{The Fermat-type cases.} Among $39$ distinct Fermat-type cases with
+$g_0\le8$ (deduplicated), $38$ have a $\det\Phi$ divisible by $s^{p-1}-1$; the
+exception $(8,5,9,6,3)$ has $\det\Phi=3s^2+4s^5+2s^8+s^{11}$, which vanishes at
+$\sigma=1,2,4$ (values where $f$ is squarefree) but not at $\sigma=3$ (where $f$
+has a square factor). So \emph{the correct statement} is ``$\det\Phi$ vanishes at
+all smooth $\sigma$'', and not ``is divisible by $s^{p-1}-1$'' (which holds in
+$38/39$ cases). The multiplicity of $s^{p-1}-1$ is $1$ in $36$ cases, $2$ in two
+cases, $(12,5,13,1,7)$ and $(24,5,11,7,19)$, and $0$ in the exception above; see
+\S\ref{sec:corang}.
+
+\paragraph{Binomial cases.} Seven cases have a $\det\Phi$ with two monomials,
+$c\,s^a(s^{p-1}-1)$ (in the sense that the two monomials have exponents
+$p-1$ apart and coefficients opposite modulo $p$). In the first six of the table,
+each monomial comes from a single $S$ (after two internal cancellations for the
+last), and the two $S$ differ \emph{by a single exchanged index}:
+\begin{center}
+\begin{tabular}{lcccc}
+Case $(n,p,d,r,k_0)$ & $g_0$ & exchange $b\to b'$ & exponents $V$ & coefficients mod $p$\\\hline
+$(8,3,5,1,5)$ & $3$ & $2\to3$ & $1,\,3$ & $1,\,2$\\
+$(8,3,13,5,5)$ & $8$ & $1\to6$ & $10,\,12$ & $1,\,2$\\
+$(24,5,11,7,13)$ & $5$ & $2\to6$ & $7,\,11$ & $3,\,2$\\
+$(8,5,21,8,3)$ & $7$ & $4\to17$ & $9,\,13$ & $3,\,2$\\
+$(12,7,17,2,5)$ & $7$ & $5\to7$ & $13,\,19$ & $6,\,1$\\
+$(8,13,23,7,3)$ & $8$ & $2\to9$ & $21,\,33$ & $7,\,6$\\
+$(9,17,16,3,2)$ & $3$ & (a single $S$ gives both exponents) & $0,\,16$ & $9,\,8$\\\hline
+\end{tabular}
+\end{center}
+That the gap between exponents is exactly $p-1$ is nothing deep: a binomial that
+vanishes on $\F_p^\times$ requires $e_1\equiv e_2\pmod{p-1}$ and the exponents
+remain small. The two facts to explain are (a) why only two terms remain and (b)
+why the coefficients are opposite; we have no answer (\textbf{[O]}).
+
+\paragraph{What cannot be asserted.} Over the \emph{integers} (unreduced
+multinomials), the two coefficients are exactly opposite for $(8,3,5,1,5)$
+($-2,+2$) and $(8,3,13,5,5)$ ($+16,-16$), but not in the others: ratio $-6$ for
+$(8,5,21,8,3)$ ($\equiv-1\pmod5$), and integer ratio $7134627\equiv-1\pmod{17}$
+for $(9,17,16,3,2)$. We therefore claim \emph{no involution} between the two $S$:
+only the case $p=3$ with two admissible $S$ is clean.
+
+\section{Outside the family $p\equiv-1\pmod n$: the corank}
+\label{sec:corang}
+
+\S\ref{sec:meca} records corank $1$ in the $91$ cases of the family
+$p\equiv-1\pmod n$. For a $2$-cycle it suffices that $p^2\equiv1\pmod n$; the
+complementary family $p\not\equiv\pm1\pmod n$ behaves differently.
+
+\begin{theorem}[\textbf{[D]} multiplicity and corank]
+\label{thm:ordcor}
+Let $\Phi(s)\in M_g(\F[s])$ ($\F$ a field) and $s_0\in\F$ with
+$\dim\Ker\Phi(s_0)=c$. Then $(s-s_0)^c$ divides $\det\Phi(s)$.
+\end{theorem}
+
+\begin{proof}
+Let $P\in GL_g(\F)$ whose last $c$ columns span $\Ker\Phi(s_0)$. The last $c$
+columns of $\Phi(s)P$ are $\bigl(\Phi(s)-\Phi(s_0)\bigr)$ applied to these
+vectors; their entries are divisible by $s-s_0$. By multilinearity of the
+determinant in these $c$ columns, $(s-s_0)^c$ divides $\det(\Phi P)=\det\Phi\cdot\det P$,
+and $\det P\in\F^\times$. \end{proof}
+
+Consequence: if $\det\Phi\not\equiv0$ vanishes at $\sigma_0$ with a corank $c$
+there, its multiplicity there is $\ge c$. This is what is observed: in
+$(12,5,13,1,7)$, $g_0=7$, $g_1=11$, we find (\textbf{[V]})
+$\det\Phi=2\sigma^7(\sigma^4-1)^2$ in $\F_5[\sigma]$ and a corank $2$ for every
+$\sigma\in\F_5^\times$; the neighbouring case $(12,5,13,6,7)$ has corank $1$.
+
+\paragraph{Survey \textbf{[V]}.} For $p^2\equiv1\pmod n$, $p\not\equiv\pm1$, with
+$p\le31$, $n\le40$, $d\le30$, $g_0\le12$, all $r$, deduplicated by
+$(p,d,r,k_0/n)$: $16331$ cases of deficient rank for every smooth $\sigma$,
+among which $449$ \emph{pure} (blocks of full rank and support of $\Phi$ with a
+perfect matching, hence hidden vanishings). The corank of these $449$ cases is:
+$1$ for $388$, $2$ for $52$, $3$ for $8$, $5$ for $1$. The computation is
+identical in Python and under Sage (on the restricted range $r\le d-r$ that we
+had first used, $8782$ cases of which $187$ pure, the two environments give the
+same counts). The cross table by $g_0$ and $N_0+N_1$ versus $p$:
+\begin{center}
+\begin{tabular}{lccc}
+ & corank $1$ & corank $\ge2$ & share of corank $\ge2$\\\hline
+$g_0\le5$, $N_0+N_1<p$ & $75$ & $2$ & $2.6\,\%$\\
+$g_0\le5$, $N_0+N_1\ge p$ & $62$ & $4$ & $6.1\,\%$\\
+$g_0\ge6$, $N_0+N_1<p$ & $79$ & $2$ & $2.5\,\%$\\
+$g_0\ge6$, $N_0+N_1\ge p$ & $172$ & $53$ & $23.6\,\%$\\\hline
+\end{tabular}
+\end{center}
+Corank $\ge2$ is thus concentrated where $g_0\ge6$ \emph{and} $N_0+N_1\ge p$.
+Neither condition alone suffices, and we have neither a law nor an explanation
+(\textbf{[O]}). Consequence for the statement of \S\ref{sec:meca}: ``corank $1$''
+is an observed property of the family $p\equiv-1\pmod n$, not of all $2$-cycles.
+
+\section{Generic support: Conjecture G \textbf{[V]/[O]}}
+\label{sec:conjG}
+
+Let $E\subset\{0,\dots,d\}$ with $0,d\in E$ and $f_c=\sum_{e\in E}c_ex^e$ with
+indeterminate coefficients $c_e$. Since $N(k)<p$, the multinomials do not vanish
+modulo $p$: the support of $M^{(k)}$ is determined by the sums of $N(k)$ terms of
+$E$ (in the sense of sumsets), and the flow $\Delta(E)$ of \S\ref{sec:menger}
+follows.
+
+\begin{proposition}[\textbf{[D]}]
+If $\Delta(E)<g_0$ then $\det\Phi_c\equiv0$ in $\F_p[c]$.
+\end{proposition}
+(Same proof as Theorem~\ref{thm:menger}: only the support matters.)
+
+\begin{center}\emph{Conjecture G \textbf{[O]}.} For $|E|\ge4$: $\det\Phi_c\not\equiv0$
+if and only if $\Delta(E)=g_0$.\end{center}
+
+\emph{Evidence.} The direction ``$\Rightarrow$'' is the proposition. For
+``$\Leftarrow$'': $\approx1230$ trials with random coefficients on supports $E$ of
+size $\ge4$ (including $474$ ``adversarial'' supports: arithmetic progressions,
+$\gcd>1$), no counterexample. For $|E|=3$ the converse is \emph{false}: all the
+``zero minor'' and ``cancellation'' cases above are trinomials with
+$\Delta=g_0$ and $\det\Phi\equiv0$. An attempted proof by grading
+(Proposition~\ref{prop:deg}) and tropical weights (Monge arrays) runs into the
+fact that rectangles contained in one segment of the hull give the same total
+monomial; binomial minors can then vanish modulo $p$, exactly as in
+mechanism~2. \textbf{The conjecture is not proved.}
+
+\paragraph{Adding a fourth monomial \textbf{[V]}.} Replacing $f$ by $f+\tau x^s$
+($\tau$ generic) lifts the Menger obstruction for $34$ of the $37$ Menger cases
+of the family $p\equiv-1\pmod n$, for every $s$; the three exceptions occur when
+$s$ is a small multiple of $r$ modulo $d$. The rank is then full in $57$ cases
+out of $60$ draws; the $3$ draws that fall short are not explained.
+
+\section{Remarks: $y^2$ and the link with the complex route}
+\label{sec:remarks}
+
+\paragraph{The case $n=2$.} The Menger graph reduces to a Hall condition on the
+support of $\Phi$, which is the very definition of hidden vanishing:
+Theorem~\ref{thm:menger} is then empty. An earlier sweep ($p\le59$, $d$ odd
+$\le29$) found $8$ hidden cases for $y^2$, none with $d=p$; they come under the
+monomial gauge known for $y^2$ (\textbf{[V]}).
+
+\paragraph{Hypergeometric dictionary \textbf{[O]}.} The periods
+$\int x^i\,dx/y^k$ of the family are expressed by hypergeometric series in
+$z=\sigma^m$, $m=d/\gcd(d,r)$, which split according to the class of
+$v\bmod m$; the Hasse--Witt matrix is a truncation of such series
+($A$-hypergeometric series, Adolphson--Sperber, arXiv:1601.05127). Their
+Theorem~2.3 (generic invertibility of the Hasse--Witt determinant under a support
+condition, by a convex-hull argument) has the same form as Conjecture~G. We have
+read only excerpts: it is not used in our proofs, and we do not know whether it
+implies Conjecture~G.
+
+\section{Version 4.1: second iterate, kernel of a block, exact forms and rank cuts}
+\label{sec:v41}
+
+This section adds proved results (\textbf{[D]}), numerical checks (\textbf{[V]})
+and open points (\textbf{[O]}). It also corrects a point of scope: unless stated
+otherwise, the statements ``for every $\sigma$'' concern $\sigma\in\F_p$ (see
+Lemma~\ref{lem:iter}). The arguments about exact forms are standard (the kernel
+of the Cartier operator is the space of exact forms); we claim no novelty on
+these points.
+
+\subsection*{The second iterate}
+
+On $\F_p[x]\,dx$ the Cartier operator is
+$C\big(\sum c_m x^m dx\big)=\sum_j c_{pj-1}\,x^{j-1}dx$. It is $\F_p$-linear and
+satisfies $C(g^p\omega)=g\,C(\omega)$ and $C(dg)=0$. With the notation of Th.~A,
+$M_0[b,i]=[x^{pb-i}]f^{N_0}$ is the matrix of $h\mapsto C(f^{N_0}h\,dx)$ on
+polynomials $h=\sum_i h_ix^{i-1}$ of degree $<g_0$ towards those of degree
+$<g_1$; likewise for $M_1$ and $N_1$.
+
+\begin{lemma}[\textbf{[D]}, second iterate]
+\label{lem:iter}
+Let $\sigma\in\F_p$, $f=1+\sigma x^r+x^d$ and $M=pN_1+N_0$. Then $\Phi=M_1M_0$ is
+the matrix of $h\mapsto C^2(f^{M}h\,dx)$, i.e.\ $\Phi[a,i]=[x^{p^2a-i}]f^{M}$.
+\end{lemma}
+\begin{proof}
+$C(f^{N_1}\,C(f^{N_0}h\,dx))=C\big(C(f^{pN_1}f^{N_0}h\,dx)\big)$ because
+$f^{N_1}C(\omega)=C\big((f^{N_1})^p\omega\big)$ (property $C(g^p\omega)=gC(\omega)$
+with $g=f^{N_1}$, with coefficients in $\F_p$). Then one reads the coefficient of
+$x^{p^2a-1}$ in $f^{M}x^{i-1}$.
+\end{proof}
+
+\begin{remark}[\textbf{Frobenius twist}]
+For $\sigma\in\F_q\setminus\F_p$ the Cartier operator is semilinear
+($C(c\omega)=c^{1/p}C(\omega)$) and the correct product involves a factor twisted
+by Frobenius (this is the twisted product of Achter--Howe). The statements
+``$\det\Phi\equiv0$ for every $\sigma$'' of this document are therefore to be
+read for $\sigma\in\F_p$. Menger's theorem and the statements about vanishing
+minors, which depend only on the support, are not concerned. Section~\ref{sec:tvar}
+gives a numerical test of what happens outside $\F_p$.
+\end{remark}
+
+\subsection*{The kernel of a block is the image of a first-order differential operator}
+
+For $f=1+\sigma x^r+x^d$ and $N\ge1$, put $L_Nq=f\,q'+(N+1)f'\,q$; we have
+$L_Nq=(qf^{N+1})'/f^N$.
+
+\begin{theorem}[\textbf{[D]}]
+\label{thm:ker}
+Let $f$ be squarefree in $\F_p[x]$ and $N<p$. A polynomial $h$ satisfies
+$C(f^Nh\,dx)=0$ if and only if there is $q\in\F_p[x]$ with $h=L_Nq$. The kernel of
+the block $M$ (window $\deg h<g$) is therefore $\{L_Nq:\deg L_Nq<g\}$.
+\end{theorem}
+\begin{proof}
+($\Leftarrow$) $f^Nh=(qf^{N+1})'$ is exact, so $C(f^Nh\,dx)=0$.
+
+($\Rightarrow$) A polynomial form is killed by $C$ if and only if it has no
+monomial $x^{pk-1}$, i.e.\ if and only if it is exact: $f^Nh=g'$ with
+$g\in\F_p[x]$ (defined modulo $\F_p[x^p]$). At each root $\rho$ of $f$ (a simple
+root), write $g=\sum_m c_m(x-\rho)^m$; since $f^N\mid g'$, we have $m\,c_m=0$ for
+$1\le m\le N$, and $m$ is invertible in $\F_p$ because $N<p$. Hence
+$g\equiv g(\rho)\pmod{(x-\rho)^{N+1}}$.
+
+Let $A=\F_p[x]/(f)$, an \'etale algebra; the Frobenius $a\mapsto a^p$ of $A$ is
+bijective. Let $w_0\in\F_p[t]$ be such that the class of $w_0(\bar x)$ is
+$\mathrm{Fr}^{-1}(\bar g)$, and put $w=w_0$. Then $w(x^p)=w_0(x)^p\equiv g\pmod f$,
+so $w(\rho^p)=g(\rho)$ for every root. Now $x^p-\rho^p=(x-\rho)^p$, so
+$w(x^p)\equiv w(\rho^p)=g(\rho)\pmod{(x-\rho)^{p}}$, in particular modulo
+$(x-\rho)^{N+1}$ (since $N+1\le p$). Thus $g-w(x^p)$ is divisible by
+$(x-\rho)^{N+1}$ for each root, hence by $f^{N+1}$ ($f$ monic with distinct
+roots): $g=w(x^p)+qf^{N+1}$. As $w(x^p)'=0$, we get
+$f^Nh=g'=f^N(fq'+(N+1)f'q)$, i.e.\ $h=L_Nq$.
+\end{proof}
+
+\noindent\textbf{[V]} On $223$ smooth cases where $M_0$ is deficient
+($p\le13$, $d\le15$, $g_0\le8$), the dimension of the kernel coincides with that
+of $\{L_Nq:\deg L_Nq<g_0\}$; it suffices to take $\deg q<d(p-1-N)$ (this is the bound of the companion note:
+$L_N$ coincides with $L(G)=fG'-jf'G$, $j=p-1-N$, whose window is $\deg G\le dj$,
+for windows $g\le d$); a smaller bound would wrongly give a
+smaller kernel (we first made this truncation error). \textbf{[V]} The bound was
+tested on $2000$ random cases with $0$ mismatches (\texttt{verify\_kernel\_theorem.py}).
+
+\subsection*{A recurrence and the twin columns}
+
+\begin{lemma}[\textbf{[D]}, recurrence]
+\label{lem:rec}
+Let $f^N=\sum a_ex^e$. For every $e\in\mathbb Z$:
+$e\,a_e+\sigma\,(e-(N+1)r)\,a_{e-r}+(e-(N+1)d)\,a_{e-d}=0.$
+\end{lemma}
+\begin{proof}
+Compare the coefficients of $x^{e-1}$ in $f\,(f^N)'=N\,f'f^N$: on the left
+$e\,a_e+\sigma(e-r)a_{e-r}+(e-d)a_{e-d}$, on the right
+$N\sigma r\,a_{e-r}+Nd\,a_{e-d}$.
+\end{proof}
+
+Write $c_m[b]=a_{pb-m}$ (column $m$, $m\in\mathbb Z$). With $e=pb-i$ we have
+$e\equiv-i\pmod p$, whence a relation \emph{with constant coefficients} between
+columns:
+$$-i\,c_i-\sigma\,(i+(N+1)r)\,c_{i+r}-(i+(N+1)d)\,c_{i+d}\equiv0\pmod p .$$
+
+\begin{corollary}[\textbf{[D]}, twin columns]
+\label{cor:jum}
+If $i\equiv-(N+1)d\pmod p$, $1\le i$, $i+r\le g_0$ and $i\not\equiv0\pmod p$, then
+$c_i=-\sigma\,\dfrac{i+(N+1)r}{i}\,c_{i+r}$ in $M_0$ modulo $p$. Hence
+$\operatorname{rk}M_0<g_0$ and $\det\Phi\equiv0\pmod p$ for every $\sigma$.
+\end{corollary}
+
+\noindent\emph{Examples.} (a) $(d,r,p,k)=(4,1,7,2)$, $n=3$ (cycle of length $1$,
+$N=4$, $g=2$): $f=1+\sigma x+x^4$, $f^4$ gives
+$M=\begin{pmatrix}12\sigma^2&12\sigma\\4\sigma&4\end{pmatrix}$ (coefficients
+$12=4!/(1!\,2!\,1!)$ at $x^6$, $12$ at $x^5$, $4=4!/(0!\,1!\,3!)$ at $x^{13}$,
+$4=4!/(1!\,0!\,3!)$ at $x^{12}$), column~$1=\sigma\cdot$ column~$2$ and
+$\det M=48\sigma^2-48\sigma^2=0$ exactly in $\mathbb Z[\sigma]$; the corollary
+predicts it: $i\equiv-5\cdot4=-20\equiv1\pmod7$.
+(b) $(n,p,d,r,k_0)=(8,19,11,3,5)$: $N=16$, $i\equiv-17\cdot11\equiv3$, partner
+$i+r=6$, and $-(3+17\cdot3)/3\equiv1$, so $c_3=\sigma c_6$: the equality is even
+exact in $\mathbb Z[\sigma]$ (the terms $(u,v,w)=(m,m{+}1,15{-}2m)$ of column $3$
+and $(m{+}1,m,15{-}2m)$ of column $6$ have the same multinomial coefficient).
+The corollary thus explains five of the seven single-twin-column cases of $M_0$ in
+the census below: $(8,11,13,4,5)$, $(8,11,17,1,5)$, $(12,17,19,4,7)$,
+$(8,19,11,3,5)$, $(12,31,17,3,5)$. The two other twins $(8,11,19,14,5)$ (columns
+$3,8$, shift $d-r$) and $(8,29,15,1,3)$ (columns $1,3$, ratio $\sigma^2$) come
+from other relations of the same family or from a composition; we have not proved
+them.
+
+\subsection*{The module of exact forms: observed laws}
+
+$L_N$ is $\F_p[t]$-linear for $t=x^p$, so $\operatorname{Im}L_N$ is a submodule of
+$\F_p[x]=\bigoplus_{s=0}^{p-1}\F_p[t]x^s$. Let $\Lambda_N$ be the set of leading
+degrees of its non-zero elements; the dimension of the kernel of the block of
+window $g$ is $\#\{\ell\in\Lambda_N:\ell<g\}$ (Th.~\ref{thm:ker}).
+\begin{itemize}
+\item \textbf{[D]} No element of $\operatorname{Im}L_N$ has leading degree
+$\equiv-1-Nd\pmod p$: the leading term of $f^Nh=g'$ has degree $\deg h+Nd$, and a
+derivative has no monomial $x^{pk-1}$.
+\item \textbf{[V]} Over $108\,736$ situations ($p\le17$, $d\le21$, all $r$, all
+$N<p$, $\sigma$ such that $f$ is squarefree): the module has rank $p-1$; if
+$\nu_s=s+pk_s$ is the smallest leading degree of class $s$, then
+$\sum_sk_s=\lfloor Nd/p\rfloor$ (conservation law, not proved); the profile
+$(\nu_s)$ is independent of $\sigma$ in $9731$ of the $10\,302$ combinations
+$(p,d,r,N)$ having at least two smooth $\sigma$ ($94.5\,\%$) and depends on
+$\sigma$ in $571$.
+\item \textbf{[V]} For the binomial ($\sigma=0$, $c=(N+1)d\not\equiv0$): the
+profile has as missing leading degrees the class $-1-Nd$ and the starting
+vertices $v_0<d-1$ such that $(-1-v_0)d^{-1}\bmod p<(-1-c-v_0)d^{-1}\bmod p$
+(checked on $1307$ cases out of $1307$). Example $(p,d,N)=(7,4,4)$: class $4$ and
+starts $1,2$.
+\item \textbf{[V]} For the trinomial, the simple rule ``first cancellation of a
+coefficient'' (first leading degree $=a_0+r-1$ or $a_0-1$ with
+$a_0=-(N+1)d\bmod p$) holds in only $20\,\%$ of cases: no closed formula
+(\textbf{[O]}).
+\end{itemize}
+
+\subsection*{The rank cut}
+
+\begin{proposition}[\textbf{[D]}, Menger with true ranks]
+\label{prop:cut}
+For every partition $\{1,\dots,g_1\}=S\sqcup S^c$:
+$\operatorname{rk}\Phi\le\operatorname{rk}M_1[\,:,S]+\operatorname{rk}M_0[S^c,:\,]$.
+More generally, for every invertible diagonal matrix $D$ of size $g_1$,
+$\operatorname{rk}(M_1DM_0)\le\operatorname{rk}M_1[\,:,S]+\operatorname{rk}M_0[S^c,:\,]$.
+\end{proposition}
+\begin{proof}
+$M_1DM_0=M_1[:,S]D_SM_0[S,:]+M_1[:,S^c]D_{S^c}M_0[S^c,:]$; the first term has rank
+$\le\operatorname{rk}M_1[:,S]$, the second rank $\le\operatorname{rk}M_0[S^c,:]$,
+and rank is subadditive.
+\end{proof}
+Menger's theorem is the same bound with the rank replaced by the maximum matching
+of the support. This inequality is elementary and probably classical; we claim no
+novelty. The version with $D$ is used in \S\ref{sec:tvar}.
+
+\medskip\noindent\textbf{Census [V].} Domain: $p\le31$, $3\le n\le12$,
+$p^2\equiv1\pmod n$, $p\not\equiv1\pmod n$, $d\le25$, $\gcd(d,n)=1$, all $r$,
+$2\le g_0\le12$, pairs $(k_0,k_1)$ with $k_1>k_0$. We keep the cases where
+$\det\Phi\equiv0$ \emph{identically in $\mathbb Z[\sigma]$} (test at a random
+$\sigma$ modulo $2^{61}-1$), with a perfect matching in the support of $\Phi$:
+$33$ cases, i.e.\ $27$ distinct cases once the cases $(n,k_0)\sim(n',k_0')$ with
+the same $k_0/n$ are identified (our earlier sweeps did not make this
+identification). Three groups are concerned: $(3,17,19,6,1),(6,17,19,6,2),
+(9,17,19,6,3),(12,17,19,6,4)$; $(3,29,17,5,1),(6,29,17,5,2),(12,29,17,5,4)$;
+$(5,19,23,8,1),(10,19,23,8,2)$.
+
+\begin{center}
+\begin{tabular}{lcl}
+Class & distinct cases & mechanism\\\hline
+Twin columns of $M_0$ ($c_i=\sigma^kc_j$, $k\in\{\pm1,\pm2\}$) & 7 & Cor.~\ref{cor:jum} for 5 of them\\
+Twin rows of $M_1$ & 3 & $(3,11,20,13,1)$, $(9,17,20,6,2)$, $(8,23,25,6,3)$\\
+Three-column relation of $M_0$ & 1 & $(8,19,13,7,5)$: $-16\sigma c_1+c_7+18\sigma^2c_8=0$, checked exactly on the $11$ rows\\
+Mixed: $\operatorname{rk}M_0=\operatorname{rk}M_1=g_0$ but a cut $S$ with bound $<g_0$ & 13 & Prop.~\ref{prop:cut}, bound $=\operatorname{rk}\Phi$ in all cases\\
+Cancellations between non-zero terms & 3 & $(8,3,11,4,5)$, $(8,3,11,7,5)$, $(8,5,19,12,3)$: \textbf{[O]}\\
+\end{tabular}
+\end{center}
+In the three twin-row cases, the script \texttt{census\_exact\_zero.py} shows that $\operatorname{rk}M_0=g_0-1$ as well; the table records the mechanism we identified for $M_1$, and we have not identified one for the deficiency of $M_0$ there. The script \texttt{census\_exact\_zero.py} reproduces this census (27 distinct cases: 11 with a deficient block, 13 with a rank cut, 3 without a cut).
+
+For the $13$ mixed cases, the cut was found by enumerating all $S$ ($g_1\le14$) or
+by local search; it is checked at one numerical $\sigma\in\F_p$ per case, except
+for $(12,23,13,10,5)$ treated below for every $\sigma$. This census concerns
+cancellation \emph{exact over $\mathbb Z$}; it is not reconciled with the table
+``$14$ zero minors / $7$ cancellations'' of \S\ref{sec:fermat}, obtained on a
+smaller domain with another criterion. Cases that vanish only modulo $p$ are not
+in this census.
+
+\subsection*{A complete by-hand proof: the mixed case $(n,p,d,r,k_0)=(12,23,13,10,5)$}
+
+Here $k_1=5\cdot23^{-1}\equiv7\pmod{12}$, $g_0=\lfloor65/12\rfloor=5$,
+$g_1=\lfloor91/12\rfloor=7$, $N_0=(7\cdot23-5)/12=13$,
+$N_1=(5\cdot23-7)/12=9$, $f=1+\sigma x^{10}+x^{13}$ over $\F_{23}$. The entries are
+$\sum\frac{N!}{u!v!w!}\sigma^v$ over $u+v+w=N$, $10v+13w=e$, with $e=23b-i$ for
+$M_0$ ($N=13$) and $e=23a-b$ for $M_1$ ($N=9$).
+
+\emph{Step 1: rows $b=1,2,3$ of $M_0$ are supported on columns $\{3,4\}$.} Row
+$b=1$: exponents $18,\dots,22$, of which only $20=10\cdot2$ has the form
+$10v+13w$ ($v+w\le13$); entry $\frac{13!}{11!\,2!}\sigma^2=78\sigma^2$ in column
+$3$. Row $2$: exponents $41,\dots,45$, only $43=3\cdot10+13$ fits:
+$\frac{13!}{9!\,3!\,1!}\sigma^3=2860\sigma^3$ in column $3$. Row $3$: exponents
+$64,\dots,68$; only $66=4\cdot10+2\cdot13$ (column $3$, $25740\sigma^4$) and
+$65=5\cdot13$ (column $4$, $1287$) fit. Hence
+$\operatorname{rk}M_0[\{1,2,3\},:]\le2$.
+
+\emph{Step 2: $\operatorname{rk}M_1[:,\{4,5,6,7\}]\le2$ modulo $23$.} Column $5$
+of $M_1$ is zero (exponents $18,41,64,87,110$: none of the form $10v+13w$ with
+$v+w\le9$). Columns $4,6,7$ have as non-zero entries (rows $a=1,\dots,5$):
+$$c_4=(0,0,126,252\sigma,36\sigma^2),\quad c_6=(0,126\sigma^4,504\sigma^5,252\sigma^6,0),\quad c_7=(0,84,630\sigma,756\sigma^2,84\sigma^3),$$
+for example $126=\frac{9!}{4!\,5!}$ (exponent $65=5\cdot13$),
+$252=\frac{9!}{2!\,1!\,6!}$ (exponent $88=10+6\cdot13$),
+$36=\frac{9!}{0!\,2!\,7!}$ ($111=20+7\cdot13$), etc. One checks, row by row,
+$$13\sigma^5\,c_4+7\,c_6+\sigma^4\,c_7\equiv0\pmod{23},$$
+since the integer sums are: row $2$: $7\cdot126+84=966=23\cdot42$; row $3$:
+$13\cdot126+7\cdot504+630=5796=23\cdot252$; row $4$:
+$13\cdot252+7\cdot252+756=5796=23\cdot252$; row $5$: $13\cdot36+84=552=23\cdot24$;
+row $1$: all entries are zero. Hence $\operatorname{rk}M_1[:,\{4,5,6,7\}]\le2$.
+
+\emph{Step 3: conclusion.} With $S=\{4,5,6,7\}$ and $S^c=\{1,2,3\}$,
+Prop.~\ref{prop:cut} gives $\operatorname{rk}\Phi\le2+2=4<5=g_0$, hence
+$\det\Phi\equiv0\pmod{23}$ for every $\sigma\in\F_{23}$. (The two bounds are
+those of single factors, so by the diagonal version of Prop.~\ref{prop:cut} the
+same conclusion holds for every product $M_1DM_0$ with $D$ invertible diagonal;
+see \S\ref{sec:tvar}.)
+
+\emph{The support of $\Phi$ nevertheless admits a perfect matching} (so this is
+not a Menger case): for $\sigma\neq0$, the following paths $a\to b\to i$ use only
+entries that are non-zero modulo $23$ and are disjoint: $1\to3\to4$, $5\to1\to3$,
+$2\to7\to5$, $3\to6\to1$, $4\to4\to2$ (entries $M_1[1,3]=13\sigma^2$,
+$M_0[3,4]=22$; $M_1[5,1]=9\sigma$, $M_0[1,3]=9\sigma^2$; $M_1[2,7]=15$,
+$M_0[7,5]=13$; $M_1[3,6]=21\sigma^5$, $M_0[6,1]=12\sigma^2$;
+$M_1[4,4]=22\sigma$, $M_0[4,2]=2\sigma^9$). This is a hidden vanishing, with
+$\operatorname{rk}\Phi=4$ checked numerically.
+
+\section{The variant $y^n=x^d+\sigma x^r+t$ and parameters outside $\F_p$}
+\label{sec:tvar}
+
+Let $t\in\F_p^\times$ and $f_t=t+\sigma x^r+x^d$. The blocks $M_0(\sigma,t)$,
+$M_1(\sigma,t)$ are defined by the same formulas, with $t^u\sigma^v$ in place of
+$\sigma^v$ in the multinomial sum, and $\Phi(\sigma,t)=M_1M_0$ is the honest
+Cartier product of the $\F_p$-curve $y^n=f_t$ (no twist is needed, since all
+coefficients lie in $\F_p$).
+
+\begin{proposition}[\textbf{[D]}, scaling]
+\label{prop:scal}
+Let $\lambda\in\overline{\F}_p$ with $\lambda^d=t$ and $\sigma'=\sigma\lambda^{r-d}$.
+Then $M_j(\sigma,t)[b,i]=t^{N_j}\lambda^{-pb}\cdot\lambda^{i}\,M_j(\sigma',1)[b,i]$
+(for $j=0$; for $j=1$ replace $b,i$ by $a,b$): each block is a row scaling times a
+column scaling of the block at $(\sigma',1)$. Consequently
+$\Phi(\sigma,t)=D_1\,M_1(\sigma',1)\,D\,M_0(\sigma',1)\,D_2$ with $D_1,D_2$ invertible
+diagonal and $D=\operatorname{diag}(\lambda^{(1-p)b})_b$. In particular, if
+$\lambda\in\F_p$ (e.g.\ if $t$ is a $d$-th power in $\F_p^\times$), then $D=1$ and
+$\operatorname{rk}\Phi(\sigma,t)=\operatorname{rk}\Phi(\sigma',1)$ with
+$\sigma'\in\F_p$.
+\end{proposition}
+\begin{proof}
+$f_t(\lambda x)=t+\sigma\lambda^rx^r+tx^d=t\,f_{\sigma'}(x)$, hence
+$[x^e]f_t^N=\lambda^{-e}t^N[x^e]f_{\sigma'}^N$; put $e=pb-i$. The product is
+formed with $\lambda^{b}$ (from $M_1$) times $\lambda^{-pb}$ (from $M_0$), which
+gives the inner factor $\lambda^{(1-p)b}$.
+\end{proof}
+For $\lambda\notin\F_p$ (i.e.\ $t$ not a $d$-th power in $\F_p$), $\sigma'$ in
+general lies outside $\F_p$ and $M_1D M_0$ is the $\F_p$-rational model of the
+Frobenius-twisted product at $\sigma'$ (we do not re-derive here the exact
+convention of the twist). So the honest $\F_p$-computation of $\Phi(\sigma,t)$
+for $t$ not a $d$-th power gives the rank at a parameter $\sigma'\notin\F_p$,
+without having to implement $\F_q$ arithmetic.
+
+\begin{corollary}[\textbf{[D]}, persistence of factor-wise obstructions]
+\label{cor:persist}
+If the deficiency $\operatorname{rk}\Phi<g_0$ is proved by (i) a Menger obstruction
+($\Delta<g_0$), or (ii) a rank deficiency of $M_0$ or of $M_1$ proved by a column relation valid for $\sigma$ in any extension (such as Cor.~\ref{cor:jum}), or (iii) a cut (Prop.~\ref{prop:cut}) whose two bounds
+are bounds on the ranks of the single factors, then the same deficiency holds for
+$M_1DM_0$ for every invertible diagonal $D$, and hence for $\Phi(\sigma,t)$, for
+all $(\sigma,t)$ and also at parameters $\sigma'$ outside $\F_p$. (For (ii) and (iii) the relations among columns hold for $\sigma$ in any extension; for Cor.~\ref{cor:jum} this is because Lemma~\ref{lem:rec} does not use $\sigma\in\F_p$.)
+\end{corollary}
+This applies to the twin-column, twin-row and mixed-cut classes of the census;
+it does not apply to cancellations between non-zero terms, whose mechanism is a
+numerical coincidence between several products $A_SB_S$ and may not survive a
+change of the inner diagonal. \textbf{Warning (correction).} It is \emph{not}
+true that $\det\Phi(\sigma,1)\equiv0$ in $\mathbb Z[\sigma]$ implies
+$\det\Phi(\sigma,t)\equiv0$ in $\mathbb Z[\sigma,t]$ by a weight argument: the
+total $t$-exponent of a term of $A_SB_S$ is affine in the $\sigma$-degree $V$ but
+with an offset that depends on $S$ (through $\Sigma S$, Prop.~\ref{prop:deg}), so
+setting $t=1$ can merge terms of different $S$ that stay separate for $t\ne1$.
+
+\paragraph{Sweep \textbf{[V]}.} Script \texttt{tvariant.py} (in the package). Domain:
+$p\le31$, $3\le n\le12$, $p^2\equiv1\pmod n$, $p\not\equiv1\pmod n$,
+$3\le d\le25$, $\gcd(d,n)=1$, $\gcd(d,p-1)>1$, all $r$, $2\le g_0\le12$,
+$k_1>k_0$. We keep the cases (not deduplicated by $k_0/n$) where, at $t=1$, the
+rank of $\Phi$ is $<g_0$ for every smooth $\sigma\in\F_p^\times$ and the union of
+the supports has a perfect matching: $59$ cases. For each we compute
+$\operatorname{rk}\Phi(\sigma,t)$ for all smooth $(\sigma,t)\in(\F_p^\times)^2$
+and split by $t$ a $d$-th power (then $\sigma'\in\F_p$) or not.
+\begin{center}
+\begin{tabular}{lccc}
+ & cases & $t$ a $d$-th power: deficient for all & $t$ not a $d$-th power: deficient for all\\\hline
+$\det\Phi\equiv0$ over $\mathbb Z$ & 32 & 32 & 32\\
+vanishing only modulo $p$ & 27 & 27 & 13 (14 lose the deficiency at some $(\sigma,t)$)\\
+\end{tabular}
+\end{center}
+(Exactness over $\mathbb Z$ is tested at a random $\sigma$ modulo $2^{61}-1$.) So:
+(1) for all $32$ cases with an identically vanishing determinant over $\mathbb Z$,
+the deficiency persists at every tested $(\sigma,t)$, including parameters outside
+$\F_p$; this is consistent with Cor.~\ref{cor:persist}, which explains
+persistence for the factor-wise mechanisms, but we have not checked that each of
+these $32$ cases is of such a type. (2) The vanishings that occur only modulo $p$
+are $\F_p$-specific in more than half the cases: $14$ of $27$ lose the deficiency
+at some $(\sigma,t)$ with $t$ not a $d$-th power. Sanity check: for $t$ a $d$-th
+power the deficiency never disappears, as Prop.~\ref{prop:scal} predicts; the
+identity $\operatorname{rk}\Phi(\sigma,t)=\operatorname{rk}\Phi(\sigma',1)$ was
+also checked on $274$ random draws ($0$ discrepancy). For the $9$ cases
+tabulated in \S\ref{sec:v41} one has $\gcd(d,p-1)=1$, so every $t$ is a $d$-th
+power and the variant adds nothing there. \textbf{[O]}: a proof or a mechanism for
+the $14$ cases that lose the deficiency; whether every exact cancellation over
+$\mathbb Z$ persists outside $\F_p$.
+
+\subsection*{Open after version 4.2}
+
+\begin{itemize}
+\item The $3$ arithmetic cancellations ($p=3,5$), with no rank cut: \textbf{[O]}.
+\item Closed formula for the profile of $\operatorname{Im}L_N$ for the trinomial,
+proof of the law $\sum k_s=\lfloor Nd/p\rfloor$ and of the independence in
+$\sigma$: \textbf{[O]}.
+\item Independence in $\sigma$ of the rank cut (checked at one numerical $\sigma$
+per case, for every $\sigma$ only for $(12,23,13,10,5)$ and, by
+Cor.~\ref{cor:persist}, for the factor-wise mechanisms): \textbf{[O]}.
+\item Cycles of length $\ge3$; exact convention of the twisted product off $\F_p$;
+novelty with respect to the literature: not checked.
+\end{itemize}
+
+\section{Bibliography consulted}
+
+\begin{itemize}
+\item Hase-Liu, Triantafillou, arXiv:1709.02442; Sutherland, arXiv:2004.10189:
+Cartier--Manin matrix of superelliptic curves by blocks (direct antecedent of
+Th.~\ref{thm:A}).
+\item Elkin, \emph{The rank of the Cartier operator on cyclic covers of the
+projective line}, arXiv:0708.0431: decomposition of $H^0(\Omega^1)$ into
+eigenspaces $D_i$, permutation $\sigma$ of the blocks, rank bounds
+$\sum\min(2\lfloor d_i/p\rfloor,d_{\sigma(i)})\le\operatorname{rk}\le
+\sum\min(d_i,d_{\sigma(i)})$. Close antecedent of the block structure and of our
+per-block rank bounds; we read it only through its abstract and excerpts.
+\item Yi (student of W.~Li), talk \emph{a-number and $p$-rank of superelliptic
+curves}, Washington University: the $p$-rank of the curves $y^l=f(x)$ as the
+stabilised rank of the Cartier--Manin matrix; results not read.
+\item Blache, \emph{Hasse--Witt matrices for polynomials, and applications}
+(Rend.\ Sem.\ Mat.\ Univ.\ Padova 145, 2021): Hasse--Witt matrix depending on the
+set of exponents; full text not read. Blache, arXiv:2607.21033 (2026): generic
+ordinarity of abelian covers (the abstract states that it generalises results of
+Bouw, Li--Mantovan--Pries--Tang, Moonen and Dollarhide; we read only the abstract and
+identify no gap in it).
+\item Blanco-Chac\'on, Boix, Fordham, Yilmaz, arXiv:1712.05763 (level and
+ordinarity); Varchenko, arXiv:1806.03289; Pries, arXiv:1806.04654 and talks;
+Li--Mantovan--Pries--Tang and Tang (special families of cyclic covers);
+Achter--Howe, arXiv:1710.10726 (the Cartier--Manin product over $\F_q$ is a
+product \emph{twisted} by Frobenius); Ibukiyama--Katsura--Oort (1986).
+\item Adolphson, Sperber, arXiv:1601.05127: Hasse--Witt matrix as a truncated
+$A$-hypergeometric series, generic invertibility under a support condition
+(Th.~2.3); the statement assumes a full support (a hypothesis that our families
+do not satisfy in general); excerpts only, not used in our proofs.
+\item Moonen, and Bouw et al., arXiv:1805.06914 (Ex.~4.5): signature of an orbit
+$\{\tau,\tau^*\}$ and expected stabilised rank $\min(g_0,g_1)$; read partially,
+not used in our proofs.
+\item Earlier work of the author on $y^2=x^d+\sigma x^r+1$ (case $n=2$).
+\end{itemize}
+None of the sources consulted (abstracts or excerpts) treats the Menger
+criterion, nor the \emph{hidden} vanishings (support with a perfect matching but
+rank $<g$) for $y^n$; this does not prove their absence from the literature.
+
+\section{What this theory does not claim}
+
+\begin{itemize}
+\item \textbf{$\gcd(d,n)=1$ is a hypothesis}; $\gcd(d,n)>1$ is not treated.
+\item \textbf{No general theory}: Th.~\ref{thm:dp} is closed for $d=p$ and
+$2$-cycles only; for $d\ne p$ Th.~\ref{thm:menger} gives a test, not a formula.
+Cycles of length $\ge3$, polynomials $f$ not squarefree, $\sigma\in\F_{p^s}$ (see
+\S\ref{sec:tvar} for a numerical test only): not treated (\textbf{[O]}).
+\item \textbf{Coverage correction}: the symmetry $r\leftrightarrow d-r$ is false;
+the sweeps of \S\ref{sec:fermat}--\ref{sec:corang} run over all $r$, but the
+Cauchy--Binet check is limited to $g_0\le8$ (light sweeps) and to
+$\binom{g_1}{g_0}\le20000$; $186$ cases (first sweep, not deduplicated) and $353$
+cases (second sweep) have $g_0>8$ and are not decided.
+\item \textbf{Conjecture G} (\S\ref{sec:conjG}): not proved; the cross table of
+the corank (\S\ref{sec:corang}) is an observation, not a law.
+\item \textbf{Open}: the Fermat mechanism (24 cases); the $7$ three-layer cases
+($d>p$); the $12$ untested cases of mechanism 2; the $2$ cases of cancellation
+between terms; the arithmetic coincidences of mechanism 2; two numerical
+coincidences $(8,23,23,17,1,7)$, $(12,19,12,5,11)$ of the catalogue of $143$.
+\item \textbf{Coverage}: the numbers in this file come from distinct sweeps
+(catalogue of $233$ cases of \S\ref{sec:classif}, $143$ classified cases, $91$
+cases of the sweep $p\equiv-1\pmod n$, $6104$ cases $d=p$); their exact
+reconciliation has not been done. Point counting only checks $g\le4$.
+\item \textbf{Retractions of version 4.1 and 4.2}: the statistics ``$76/68$ cases
+where $\ker M_0>\operatorname{Im}L_N$'' and ``$310/262$'' are withdrawn
+(truncation artefact on the degree of $q$, and missing ``squarefree'' filter in
+older tests modulo $p$); the $33$ exact cases contained duplicates ($27$
+distinct); the conservation law $\sum k_s=\lfloor Nd/p\rfloor$ and the
+independence of the profile in $\sigma$ are not proved; the $3$ arithmetic
+cancellations and the three-column relation of $(8,19,13,7,5)$ remain without
+mechanism; the older tallies ($14$ zero minors, $7$ cancellations) and the census
+$p\le31$, $g_0\le12$ have different domains; the claim that
+$\det\Phi(\sigma,1)\equiv0$ over $\mathbb Z$ implies the same for
+$\det\Phi(\sigma,t)$ by a weight argument is withdrawn (\S\ref{sec:tvar}).
+\item \textbf{Novelty not claimed}: no zbMATH/MathSciNet-type database has been
+consulted, and several cited texts were read only through their abstract. The
+block formula and the per-block rank bounds have antecedents (Hase-Liu,
+Sutherland, Elkin).
+\item Th.~\ref{thm:B} relies on Oda (cited, not reproved).
+\item No Galois connection and no closed formula of the type of Part~III for
+$y^n$.
+\end{itemize}
+
+\section{Availability}
+\label{sec:avail}
+
+The accompanying package (archive \texttt{vanissements\_yn\_scripts.zip}, with a \texttt{README.md}
+and a \texttt{LICENSE}) contains, all in English:
+\begin{itemize}
+\item \texttt{verify\_hand\_proofs.py}: the by-hand examples A and B and the proof of
+$(12,23,13,10,5)$ (\S\ref{sec:stylo}, \S\ref{sec:v41});
+\item \texttt{verify\_kernel\_theorem.py}: Theorem~\ref{thm:ker} (random cases, with the truncation control);
+\item \texttt{verify\_recurrence\_twins.py}: Lemma~\ref{lem:rec}, Corollary~\ref{cor:jum} and examples (a), (b);
+\item \texttt{verify\_exact\_forms\_laws.py}: the profile of $\operatorname{Im}L_N$ ([D] and [V] laws);
+\item \texttt{cut\_search.py} and \texttt{census\_exact\_zero.py}: Prop.~\ref{prop:cut} and the census of
+\S\ref{sec:v41} (27 distinct cases);
+\item \texttt{tvariant.py}: Prop.~\ref{prop:scal} and the sweep of \S\ref{sec:tvar} (it also serves as the
+common library of the other scripts);
+\item \texttt{verify\_yn\_pure\_python.py}: independent point-count check of Theorems~A and~B (18 configurations);
+\item \texttt{vanissements\_yn.sage} (all-in-one test bench: blocks, stabilised rank, Menger flow,
+exact determinant, Cauchy--Binet, common kernel of layers, fourth monomial, criterion $d=p$, sweep; also valid
+Python) and \texttt{corank\_survey.sage} (corank survey of \S\ref{sec:corang});
+\item \texttt{proofs\_blocks.tex}: the note of complete proofs cited in \S\ref{sec:blocs}.
+\end{itemize}
+The large sweeps quoted in \S\ref{sec:classif}--\ref{sec:corang} (233 and 143 cases, $6104$ cases, $16331$
+cases) were run with earlier versions of the scripts and are not all re-runnable one-by-one from the package;
+the package reproduces the new results of versions 4.1 and 4.2 and the by-hand proofs.
+
+\end{document}

@@ -1,0 +1,7 @@
+Section 4 example, p=7, n=3, d=4, r=1
+ sigma=1 M(k=2)=[[5, 5], [4, 4]] ranks of powers=[1, 1, 1, 1] ; M(k=1)=[[0]]
+ sigma=3 M(k=2)=[[3, 1], [5, 4]] ranks of powers=[1, 0, 0, 0] ; M(k=1)=[[0]]
+Fermat-type case (n,p,d,r)=(9,17,16,3), block k=2: det Phi vs 8(s^16-1) mod 17
+ det Phi = 0 for every sigma in F_17^* : True
+det Phi(sigma) mod 17 as polynomial (coeff list, constant first): [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8]
+equals 8*(sigma^16-1): True
