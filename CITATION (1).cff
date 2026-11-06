@@ -1,9 +1,9 @@
-cff-version: 1.2.0
+ff-version: 1.3.0
 message: "If you use this work, please cite it as below."
-title: "Superelliptic generalisation of the theory of hidden vanishings: the family y^n = x^d + sigma x^r + 1"
+title: "Block Structure and Hidden Vanishings of the Cartier-Manin Matrix for Superelliptic Curves y^n = x^d + sigma x^r + 1 over F_p"
 type: software
-version: "1.0.0"
-date-released: "2026-11-01"
+version: "1.0.1"
+date-released: "2026-11-06"
 license: MIT
 repository-code: "https://github.com/sobarkadi/Superelliptic-generalisation-of-the-theory-of-hidden-vanishings-the-family-y-n-x-d-x-r-1"
 doi: "10.5281/zenodo.23857552"
@@ -22,3 +22,4 @@ keywords:
   - superelliptic curves
   - p-rank
   - hidden vanishings
+
