@@ -1,0 +1,37 @@
+==========================================================================================
+REGRESSION -- cases already validated by hand (must all remain MATCH)
+==========================================================================================
+[y^2 sanity, d odd] p=7 n=2 d=5 r=1 sigma=1  g=2  true_p_rank=1  stable_candidate=1   ==> MATCH
+[y^2 sanity, d odd] p=7 n=2 d=5 r=3 sigma=2  g=2  true_p_rank=2  stable_candidate=2   ==> MATCH
+[y^2 sanity, d odd (slower)] p=11 n=2 d=7 r=4 sigma=1  g=3  true_p_rank=3  stable_candidate=3   ==> MATCH
+[y^3 regression] p=7 n=3 d=4 r=1 sigma=1  g=3  true_p_rank=1  stable_candidate=1   ==> MATCH
+[y^3 regression] p=7 n=3 d=4 r=1 sigma=3  g=3  true_p_rank=0  stable_candidate=0   ==> MATCH
+[y^3 regression] p=7 n=3 d=4 r=1 sigma=4  g=3  true_p_rank=0  stable_candidate=0   ==> MATCH
+[y^3 regression] p=7 n=3 d=5 r=2 sigma=1  g=4  true_p_rank=1  stable_candidate=1   ==> MATCH
+
+==========================================================================================
+NEW -- p congruent to 2 (mod 3): the blocks are swapped (k <-> n-k)
+==========================================================================================
+[p=2 mod 3] p=5 n=3 d=4 r=1 sigma=1  g=3  true_p_rank=2  stable_candidate=2   ==> MATCH
+[p=2 mod 3] p=5 n=3 d=4 r=1 sigma=2  g=3  true_p_rank=2  stable_candidate=2   ==> MATCH
+[p=2 mod 3] p=5 n=3 d=4 r=1 sigma=3  g=3  true_p_rank=2  stable_candidate=2   ==> MATCH
+[p=2 mod 3] p=5 n=3 d=4 r=1 sigma=4  g=3  true_p_rank=2  stable_candidate=2   ==> MATCH
+[p=2 mod 3, d=5] p=5 n=3 d=5 r=2 sigma=1  g=4  true_p_rank=0  stable_candidate=0   ==> MATCH
+[p=2 mod 3, p=11 (slower)] p=11 n=3 d=4 r=1 sigma=1  g=3  true_p_rank=2  stable_candidate=2   ==> MATCH
+
+==========================================================================================
+NEW -- n=4 (p congruent to 1 mod 4: stable blocks)
+==========================================================================================
+[n=4, p=1 mod 4] p=5 n=4 d=3 r=1 sigma=1  g=3  true_p_rank=3  stable_candidate=3   ==> MATCH
+[n=4, p=1 mod 4] p=5 n=4 d=3 r=1 sigma=2  g=3  true_p_rank=3  stable_candidate=3   ==> MATCH
+[n=4, p=1 mod 4] p=5 n=4 d=3 r=2 sigma=1  g=3  true_p_rank=3  stable_candidate=3   ==> MATCH
+
+==========================================================================================
+NEW -- n=4, p congruent to 3 mod 4 (cycle of length 2 between blocks)
+==========================================================================================
+[n=4, p=3 mod 4] p=7 n=4 d=3 r=1 sigma=1  g=3  true_p_rank=1  stable_candidate=1   ==> MATCH
+[n=4, p=3 mod 4] p=7 n=4 d=3 r=1 sigma=2  g=3  true_p_rank=1  stable_candidate=1   ==> MATCH
+
+==========================================================================================
+SUMMARY: 18 / 18 MATCH
+==========================================================================================

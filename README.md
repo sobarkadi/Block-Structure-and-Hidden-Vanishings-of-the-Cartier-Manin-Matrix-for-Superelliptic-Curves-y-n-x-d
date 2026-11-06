@@ -86,4 +86,3 @@ MIT, see `LICENSE`. Copyright (c) 2026 Mohamed Sofiene. Change the licence if yo
 - Version 4.3.1 only changes the title and the title block of the article; the content is that of version 4.3.
 - `run_checks_output.txt` is the saved output of `sh run_checks.sh` on the released files.
 - `pure_python_output.txt` is the saved output of `python3 -I verify_yn_pure_python.py` (18 / 18 MATCH).
-

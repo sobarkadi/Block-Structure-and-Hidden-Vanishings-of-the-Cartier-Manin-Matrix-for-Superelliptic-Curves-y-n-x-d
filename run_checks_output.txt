@@ -1,0 +1,20 @@
+=== verify_hand_proofs.py
+PASS  sigma=22: the 5 disjoint paths of the matching use non-zero entries
+ALL PASS
+=== verify_kernel_theorem.py
+tested 150 random smooth cases (87 with non-zero kernel): 0 mismatches
+PASS
+=== verify_recurrence_twins.py
+PASS  exactly 5 of the 7 cases are covered by the corollary
+ALL PASS
+=== verify_exact_forms_laws.py 7 8
+[V] (p,d,r,N) with >= 2 smooth sigma whose profile does not depend on sigma: 304 / 306
+PASS
+=== census_exact_zero.py (expects: distinct cases: 27)
+distinct cases: 27
+=== tvariant.py (expects 32 and 27 cases; 14 lose the deficiency)
+Z-identical  cases=32 | deficient for all (sigma,t), t a d-th power: 32 | t not a d-th power: 32 (lose the deficiency: 0)
+mod-p only   cases=27 | deficient for all (sigma,t), t a d-th power: 27 | t not a d-th power: 13 (lose the deficiency: 14)
+=== verify_v43_checks.py (expects: det Phi = 8(sigma^16-1): True)
+det Phi(sigma) mod 17 as polynomial (coeff list, constant first): [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8]
+equals 8*(sigma^16-1): True

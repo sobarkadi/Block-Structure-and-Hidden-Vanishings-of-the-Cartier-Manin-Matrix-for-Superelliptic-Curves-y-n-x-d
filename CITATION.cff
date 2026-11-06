@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Block Structure and Hidden Vanishings of the Cartier-Manin Matrix for Superelliptic Curves y^n = x^d + sigma x^r + 1 over F_p"
+type: software
+version: "1.0.1"
+date-released: "2026-11-06"
+license: MIT
+repository-code: "https://github.com/sobarkadi/Superelliptic-generalisation-of-the-theory-of-hidden-vanishings-the-family-y-n-x-d-x-r-1"
+doi: "10.5281/zenodo.23857552"
+identifiers:
+  - type: doi
+    value: "10.17605/OSF.IO/QBV8C"
+    description: "OSF project"
+authors:
+  - family-names: "Sofiene"
+    given-names: "Mohamed"
+    email: "mohamedsofiene@gmail.com"
+    affiliation: "Independent researcher"
+abstract: "Hidden vanishings of Cartier-Manin matrices for the superelliptic family y^n = x^d + sigma x^r + 1 over F_p: block formulas, hand-checkable proofs and reproducible verification scripts. No claim of novelty is made."
+keywords:
+  - Cartier-Manin matrix
+  - superelliptic curves
+  - p-rank
+  - hidden vanishings

@@ -13,4 +13,6 @@ echo "=== census_exact_zero.py (expects: distinct cases: 27)"
 python3 census_exact_zero.py | tail -1
 echo "=== tvariant.py (expects 32 and 27 cases; 14 lose the deficiency)"
 python3 tvariant.py | tail -2
+echo "=== verify_v43_checks.py (expects: det Phi = 8(sigma^16-1): True)"
+python3 verify_v43_checks.py | tail -2
 exit $status
