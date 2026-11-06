@@ -1,9 +1,16 @@
-# Hidden vanishings of Cartier-Manin matrices for y^n = x^d + sigma x^r + 1 -- scripts and proofs
+# Block structure and hidden vanishings of the Cartier-Manin matrix for superelliptic curves y^n = x^d + sigma x^r + 1 over F_p
 
-Companion package of the document *Superelliptic generalisation of the theory of hidden vanishings:
-the family y^n = x^d + sigma x^r + 1* (`vanissements_yn_theory_en.tex` / `.pdf`, version 4.2).
-The document is distributed separately; this archive contains the code that checks its statements,
-the note of complete proofs it cites, a licence, and this file.
+Research package accompanying the article *Block Structure and Hidden Vanishings of the Cartier-Manin
+Matrix for Superelliptic Curves y^n = x^d + sigma x^r + 1 over F_p* (`vanissements_yn_theory_en.pdf`,
+version 4.3.1, 5 November 2026). It contains the article (PDF), the note of complete proofs it cites
+(`proofs_blocks.tex` / `.pdf`), the code that checks its statements, a licence and this file.
+
+**Author:** Mohamed Sofiene, independent researcher (mohamedsofiene@gmail.com).
+Technical Head, Office National de Telediffusion de Tunisie (ONT); B.Sc. in IoT and Communication
+Networks; B.Sc. in Electrical Engineering, University of Tunis.
+
+**Archives and citation:** Zenodo [10.5281/zenodo.23857552](https://doi.org/10.5281/zenodo.23857552);
+OSF [10.17605/OSF.IO/QBV8C](https://doi.org/10.17605/OSF.IO/QBV8C). See `CITATION.cff`.
 
 **Status of the results.** Statements in the document are labelled **[D]** proved (by hand),
 **[V]** checked numerically on a finite set of cases (not proved), **[O]** open. A passing script
@@ -45,7 +52,7 @@ Run the scripts from this directory (they import `tvariant.py` as a small common
 | `proofs_blocks.tex` | Note of complete by-hand proofs (kernel of a block, corank formula, duality law (K)) | Sec. 7 | compile with xelatex or pdflatex |
 | `run_checks.sh` | Runs the fast checks above in one go | | ~1 min |
 
-Section numbers refer to version 4.2 of the document.
+Section numbers refer to version 4.3.1 of the article.
 
 ## Quick start
 
@@ -72,7 +79,11 @@ python3 -I verify_yn_pure_python.py      # slower independent check of Theorems 
 
 MIT, see `LICENSE`. Copyright (c) 2026 Mohamed Sofiene. Change the licence if you prefer another one.
 
-## Version 4.3 additions
+## Version 4.3 / 4.3.1 additions
 
 - `verify_v43_checks.py` (output saved in `verify_v43_checks_output.txt`): checks the corrected worked-example matrices of Section 4 and the Fermat-type example (n,p,d,r)=(9,17,16,3), k=2, where det Phi = 8(sigma^16 - 1) mod 17 symbolically.
 - `proofs_blocks.tex/pdf`: theorem numbering is Lemma 1, Th. 2 (kernel), Prop. 6, Th. 7 (corank), Th. 10 (law K), Cor. 11.
+- Version 4.3.1 only changes the title and the title block of the article; the content is that of version 4.3.
+- `run_checks_output.txt` is the saved output of `sh run_checks.sh` on the released files.
+- `pure_python_output.txt` is the saved output of `python3 -I verify_yn_pure_python.py` (18 / 18 MATCH).
+
